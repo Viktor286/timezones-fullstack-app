@@ -2,7 +2,7 @@ import { useState } from 'react';
 import AutocompleteDropdown from './AutocompleteDropdown';
 import './index.css';
 
-const timezones = Intl.supportedValuesOf('timeZone');
+const timezones = Intl.supportedValuesOf('timeZone'); // todo: try https://momentjs.com/timezone/
 
 export default function TimezonesSelector() {
   const [input, setInput] = useState('');
