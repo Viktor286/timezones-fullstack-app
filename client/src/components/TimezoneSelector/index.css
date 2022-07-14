@@ -1,0 +1,22 @@
+.timezones-selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.adaptive-box {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.timezones-selector input {
+    border: 1px solid #aacff3;
+    outline: none;
+    padding: 1rem;
+    width: 100%;
+    height: 40px;
+    border-radius: 20px;
+}
