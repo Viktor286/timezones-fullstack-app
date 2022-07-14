@@ -16,6 +16,8 @@
     "build": "react-scripts build",
     "format": "prettier --write './**/*.js' package.json .prettierrc",
     "test": "react-scripts test",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run --spec cypress/e2e/TimezonesApp/**/*.js",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -37,6 +39,7 @@
     ]
   },
   "devDependencies": {
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "cypress": "^10.3.0"
   }
 }
