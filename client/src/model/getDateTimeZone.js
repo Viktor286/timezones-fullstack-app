@@ -6,7 +6,7 @@ export function getIanaTimeZones() {
   // 2) moment.tz.names(); // 594 iana zones
   // Bundle size with Moment.js 425kb vs without it 359kb = diff +66kb gzip
   // (results obtained via network request tab)
-  return moment.tz.names();
+  return moment.tz.names().filter((e) => e !== 'Universal'); // rm Universal edge case
 }
 
 export function getDateTimeZone(iana = 'Greenwich') {
