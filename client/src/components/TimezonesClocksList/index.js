@@ -1,12 +1,12 @@
 import './index.css';
-import ClockItem from '../ClockItem';
+import TimezonesClockItem from '../TimezonesClockItem';
 
 export default function TimezonesClocksList({ clocks = [], removeClockFromList }) {
   return (
     <section className="timezones-clocks">
       <ul>
         {clocks.map((el) => (
-          <ClockItem key={el.ianaId} clockItem={el} removeClockFromList={removeClockFromList} />
+          <TimezonesClockItem key={el.ianaId} clockItem={el} removeClockFromList={removeClockFromList} />
         ))}
       </ul>
     </section>
