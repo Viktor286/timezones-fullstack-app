@@ -1,6 +1,7 @@
 import './index.css';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import TimezonesClockItem, { NoTimezonesClockItem } from '../TimezonesClockItem';
+import TimezonesClockFilterInput from '../TimezonesClockFilterInput';
 
 export default function TimezonesClocksList({ clocks, removeClockFromList }) {
   const [filteredClocks, setFilteredClocks] = useState(clocks);
@@ -33,15 +34,8 @@ export default function TimezonesClocksList({ clocks, removeClockFromList }) {
 
   return (
     <section className="timezones-clocks">
-      <input
-        name="filter clocks"
-        type="text"
-        placeholder="filter clocks..."
-        onChange={(e) => setFilterInput(e.currentTarget.value)}
-        ref={filterClocksInput}
-      />{' '}
-      <button onClick={resetFilter}> reset </button>
-      <ul>
+      <TimezonesClockFilterInput ref={filterClocksInput} {...{ setFilterInput, resetFilter }} />
+      <ul id="clocks-list">
         {clockList.length ? (
           clockList.map((el) => (
             <TimezonesClockItem key={el.ianaId} clockItem={el} removeClockFromList={removeClockFromList} />

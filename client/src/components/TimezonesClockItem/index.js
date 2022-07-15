@@ -24,8 +24,11 @@ export default React.memo(function TimezonesClockItem({ clockItem, removeClockFr
 
 export function NoTimezonesClockItem({ resetFilter }) {
   return (
-    <div>
-      no clocks to show <button onClick={resetFilter}> reset filter </button>
-    </div>
+    <li>
+      no clocks to show
+      <button className="item-reset-filter" onClick={resetFilter}>
+        reset filter
+      </button>
+    </li>
   );
 }
