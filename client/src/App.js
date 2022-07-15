@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import './App.css';
 import TimezonesSelector from './components/TimezoneSelector';
-import TimezonesClocks from './components/TimezonesClocks';
+import TimezonesClocksList from './components/TimezonesClocksList';
 import LogoHeader from './components/LogoHeader';
 import { createClockItem } from './model/clockItem';
 import { isValidIanaTimezone } from './model/dateTimeZone';
@@ -14,17 +14,34 @@ function App() {
 
   const addClockToList = (ianaId) => {
     if (isValidIanaTimezone(ianaId) && !clocks.find((el) => el.ianaId === ianaId)) {
-      setClocksList((prevList) => [createClockItem(ianaId), ...prevList]);
+      setClocksList((prevList) => [...prevList, createClockItem(ianaId)]);
       return true;
     }
     return false;
   };
 
+  const removeClockFromList = useCallback(
+    (ianaId) => {
+      if (isValidIanaTimezone(ianaId)) {
+        setClocksList((prevList) => {
+          return prevList.filter((clock) => {
+            // don't delete default clock
+            if (clock.ianaId === ianaId && !clock.isLocal) {
+              return false;
+            }
+            return true;
+          });
+        });
+      }
+    },
+    [setClocksList],
+  );
+
   return (
     <div className="App">
       <LogoHeader />
       <TimezonesSelector addClockToList={addClockToList} skipIanaIds={usedIanaIds} />
-      <TimezonesClocks clocks={clocks} />
+      <TimezonesClocksList removeClockFromList={removeClockFromList} clocks={clocks} />
     </div>
   );
 }
