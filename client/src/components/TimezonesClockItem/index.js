@@ -1,7 +1,7 @@
 import React from 'react';
 import { getDateTimeZone } from '../../model/dateTimeZone';
 
-export default React.memo(function TimezonesClockItem({ clockItem, removeClockFromList }) {
+export default function TimezonesClockItem({ clockItem, removeClockFromList, lastUpdated }) {
   // abbr: "EDT"
   // day: "Jul 15th"
   // gmtShift: "-04:00"
@@ -20,7 +20,7 @@ export default React.memo(function TimezonesClockItem({ clockItem, removeClockFr
       ) : null}
     </li>
   );
-});
+}
 
 export function NoTimezonesClockItem({ resetFilter }) {
   return (

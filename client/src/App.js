@@ -20,22 +20,19 @@ function App() {
     return false;
   };
 
-  const removeClockFromList = useCallback(
-    (ianaId) => {
-      if (isValidIanaTimezone(ianaId)) {
-        setClocksList((prevList) => {
-          return prevList.filter((clock) => {
-            // don't delete default clock
-            if (clock.ianaId === ianaId && !clock.isLocal) {
-              return false;
-            }
-            return true;
-          });
+  const removeClockFromList = (ianaId) => {
+    if (isValidIanaTimezone(ianaId)) {
+      setClocksList((prevList) => {
+        return prevList.filter((clock) => {
+          // don't delete default clock
+          if (clock.ianaId === ianaId && !clock.isLocal) {
+            return false;
+          }
+          return true;
         });
-      }
-    },
-    [setClocksList],
-  );
+      });
+    }
+  };
 
   return (
     <div className="App">

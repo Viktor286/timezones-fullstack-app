@@ -1,5 +1,6 @@
 import './index.css';
 import React, { useEffect, useRef, useState } from 'react';
+import useHeartBeat from '../Hooks/useHeartBeat';
 import TimezonesClockItem, { NoTimezonesClockItem } from '../TimezonesClockItem';
 import TimezonesClockFilterInput from '../TimezonesClockFilterInput';
 
@@ -8,6 +9,7 @@ export default function TimezonesClocksList({ clocks, removeClockFromList }) {
   const [isClockFilterActive, setIsClockFilterActive] = useState(false);
   const [filterInput, setFilterInput] = useState('');
   const filterClocksInput = useRef();
+  const lastUpdated = useHeartBeat(5); // clocks heartbeat is once in 15 sec
 
   const resetFilter = () => {
     setIsClockFilterActive(false);
@@ -38,7 +40,12 @@ export default function TimezonesClocksList({ clocks, removeClockFromList }) {
       <ul id="clocks-list">
         {clockList.length ? (
           clockList.map((el) => (
-            <TimezonesClockItem key={el.ianaId} clockItem={el} removeClockFromList={removeClockFromList} />
+            <TimezonesClockItem
+              key={el.ianaId}
+              clockItem={el}
+              removeClockFromList={removeClockFromList}
+              lastUpdated={lastUpdated}
+            />
           ))
         ) : (
           <NoTimezonesClockItem resetFilter={resetFilter} />
