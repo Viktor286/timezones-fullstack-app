@@ -2,7 +2,7 @@ import React from 'react';
 import TimezoneSelectorItem from '../TimezoneSelectorItem';
 import './index.css';
 
-export default function AutocompleteDropdown({ filteredTimezones, selectedZoneIdx, onTimezoneClick }) {
+export default function TimezoneSelectorList({ filteredTimezones, selectedZoneIdx, onTimezoneClick }) {
   if (!filteredTimezones.length) {
     return <p className="timezone-not-found">Timezone not found</p>;
   }
