@@ -1,8 +1,13 @@
 import { useState } from 'react';
 import AutocompleteDropdown from './AutocompleteDropdown';
+import { getDateTimeZone, getIanaTimeZones } from '../../model/getDateTimeZone';
 import './index.css';
 
-const timezones = Intl.supportedValuesOf('timeZone'); // todo: try https://momentjs.com/timezone/
+const timezones = getIanaTimeZones();
+
+// todo: delete after verification
+console.log('UTC', getDateTimeZone());
+console.log('LOCAL', getDateTimeZone('America/New_York'));
 
 export default function TimezonesSelector() {
   const [input, setInput] = useState('');
