@@ -3,35 +3,37 @@ describe('Timezone autocomplete list', () => {
     cy.visit('/');
   });
 
-  it('should filter out list to 2 items keeping mouse functionality', () => {
-    const timezonesInput = 'section.timezones-selector input';
-    const timezoneListItem = 'ul.timezones-list li';
+  const timezonesInput = 'section.timezones-selector input';
+  const timezoneListItem = 'ul.timezones-list li';
+  const timezoneClocksList = 'section.timezones-clocks';
+  const defaultTimezonesLength = 592;
+  const resetTimezonesSelectorDelayOnBlur = 200 + 100; // exact value + extra
 
-    // should display New_York and New_Salem after "New" filter applied
-    cy.get(timezonesInput).type(`New `);
+  it('should filter out list to 2 items keeping mouse functionality', () => {
+    // should display Newfoundland and New_Salem but not New_York after "New" filter applied
+    cy.get(timezonesInput).type(`New`);
     cy.get(timezoneListItem)
       .should('have.length', 2)
-      .should('contain.text', 'New York')
       .should('contain.text', 'New Salem')
+      .should('contain.text', 'Newfoundland')
+      .should('not.contain.text', 'New York') // as it should be default
       // first element should be selected
       .first()
       .should('have.class', 'active');
 
     // should support click to select timezone
-    cy.get(timezoneListItem).last().click();
-    cy.get(timezonesInput).should('contain.value', 'New_Salem');
+    cy.get(timezoneListItem).first().click();
+    cy.get(timezonesInput).should('contain.value', ''); // input should reset
   });
 
   it('should filter out list to 2 items keeping keyboard functionality', () => {
-    const timezonesInput = 'section.timezones-selector input';
-    const timezoneListItem = 'ul.timezones-list li';
-
     // should display New_York and New_Salem after "New" filter applied
-    cy.get(timezonesInput).type(`New `);
+    cy.get(timezonesInput).type(`New`);
     cy.get(timezoneListItem)
       .should('have.length', 2)
-      .should('contain.text', 'New York')
       .should('contain.text', 'New Salem')
+      .should('contain.text', 'Newfoundland')
+      .should('not.contain.text', 'New York') // as it should be default
       // first element should be selected
       .first()
       .should('have.class', 'active');
@@ -49,6 +51,33 @@ describe('Timezone autocomplete list', () => {
     cy.get(timezoneListItem).last().should('have.class', 'active');
 
     // should support Enter to select timezone
-    cy.get(timezonesInput).type(`{enter}`).should('contain.value', 'New_Salem');
+    cy.get(timezonesInput).type(`{enter}`).should('contain.value', ''); // input should reset
+  });
+
+  it('should show full list on focus and hide it on blur or on escape', () => {
+    cy.get(timezonesInput).click();
+    cy.focused().should('have.id', 'timezones-search');
+    cy.get(timezoneListItem).should('have.length', defaultTimezonesLength);
+
+    cy.get(timezoneClocksList).click();
+    cy.focused().should('not.exist');
+    cy.get(timezoneListItem).should('not.exist');
+
+    // await established resetTimezonesSelector delay on blur
+    cy.wait(resetTimezonesSelectorDelayOnBlur);
+
+    // should blur on escape
+    cy.get(timezonesInput).click();
+    cy.focused().should('have.id', 'timezones-search');
+    cy.get(timezoneListItem).should('have.length', defaultTimezonesLength);
+    cy.get(timezonesInput).type(`{esc}`);
+  });
+
+  it('should not show already selected clocks', () => {
+    cy.get(timezonesInput).type(`Tokyo`).type('{enter}');
+    // await established resetTimezonesSelector delay on blur
+    cy.wait(resetTimezonesSelectorDelayOnBlur);
+    cy.get(timezonesInput).type(`Tok`);
+    cy.get(timezoneListItem).should('not.contain.text', 'Tokyo');
   });
 });

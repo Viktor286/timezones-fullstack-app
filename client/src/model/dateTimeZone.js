@@ -1,12 +1,15 @@
 import moment from 'moment-timezone';
 
+// rm Universal edge case
+const cachedTimeZones = moment.tz.names().filter((e) => e !== 'Universal');
+
 export function getIanaTimeZones() {
   // Moment.js library vs window.Intl usage stat:
   // 1) Intl.supportedValuesOf('timeZone'); // 428 iana zones
   // 2) moment.tz.names(); // 594 iana zones
   // Bundle size with Moment.js 425kb vs without it 359kb = diff +66kb gzip
   // (results obtained via network request tab)
-  return moment.tz.names().filter((e) => e !== 'Universal'); // rm Universal edge case
+  return cachedTimeZones;
 }
 
 export function getDateTimeZone(iana = 'Greenwich') {
@@ -27,4 +30,13 @@ function utcToData(moment) {
     gmtShift: moment.format('Z'), // '-04:00'
     abbr: moment.format('z'), // "PDT"
   };
+}
+
+export function detectLocalTimezone() {
+  // based on Intl.DateTimeFormat().resolvedOptions().timeZone;
+  return moment.tz.guess();
+}
+
+export function isValidIanaTimezone(iana) {
+  return cachedTimeZones.includes(iana);
 }
