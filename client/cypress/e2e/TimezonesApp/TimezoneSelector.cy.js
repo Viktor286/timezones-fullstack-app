@@ -5,7 +5,7 @@ describe('Timezone autocomplete list', () => {
 
   const timezonesInput = 'section.timezones-selector input';
   const timezoneListItem = 'ul.timezones-list li';
-  const timezoneClocksList = 'section.timezones-clocks';
+  const timezoneListItemActive = 'ul.timezones-list li.active';
   const pageHeader = 'header';
   const defaultTimezonesLength = 592;
   const resetTimezonesSelectorDelayOnBlur = 200 + 100; // exact value + extra
@@ -80,5 +80,28 @@ describe('Timezone autocomplete list', () => {
     cy.wait(resetTimezonesSelectorDelayOnBlur);
     cy.get(timezonesInput).type(`Tok`);
     cy.get(timezoneListItem).should('not.contain.text', 'Tokyo');
+  });
+
+  it('should scroll-into-center-view an active element on the list', () => {
+    // Try down direction
+    const inputDown = cy.get(timezonesInput);
+    inputDown.click();
+    for (let i = 0; i < 20; i++) {
+      inputDown.type(`{downarrow}`);
+    }
+    cy.get(timezoneListItemActive).should('be.visible');
+    cy.get(pageHeader).click();
+
+    // await established resetTimezonesSelector delay on blur
+    cy.wait(resetTimezonesSelectorDelayOnBlur);
+
+    // Try up direction
+    const inputUp = cy.get(timezonesInput);
+    inputUp.click();
+    for (let i = 0; i < 20; i++) {
+      inputUp.type(`{uparrow}`);
+    }
+    cy.get(timezoneListItemActive).should('be.visible');
+    cy.get(pageHeader).click();
   });
 });

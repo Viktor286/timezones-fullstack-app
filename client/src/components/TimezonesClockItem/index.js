@@ -11,10 +11,14 @@ export default React.memo(function TimezonesClockItem({ clockItem, removeClockFr
   const { abbr, day, gmtShift, meridiem, time, zoneIana } = getDateTimeZone(clockItem.ianaId);
 
   return (
-    <li>
+    <li data-iana={zoneIana}>
       {time}&nbsp;{meridiem}&nbsp;
       {zoneIana} {gmtShift} {abbr} {day}
-      {!clockItem.isLocal ? <button onClick={() => removeClockFromList(zoneIana)}>✕</button> : null}
+      {!clockItem.isLocal ? (
+        <button className="remove" onClick={() => removeClockFromList(zoneIana)}>
+          ✕
+        </button>
+      ) : null}
     </li>
   );
 });
