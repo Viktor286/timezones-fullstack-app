@@ -8,11 +8,11 @@ describe('Timezone autocomplete list', () => {
     const timezoneListItem = 'ul.timezones-list li';
 
     // should display New_York and New_Salem after "New" filter applied
-    cy.get(timezonesInput).type(`New`);
+    cy.get(timezonesInput).type(`New `);
     cy.get(timezoneListItem)
       .should('have.length', 2)
-      .should('contain.text', 'New_York')
-      .should('contain.text', 'New_Salem')
+      .should('contain.text', 'New York')
+      .should('contain.text', 'New Salem')
       // first element should be selected
       .first()
       .should('have.class', 'active');
@@ -27,11 +27,11 @@ describe('Timezone autocomplete list', () => {
     const timezoneListItem = 'ul.timezones-list li';
 
     // should display New_York and New_Salem after "New" filter applied
-    cy.get(timezonesInput).type(`New`);
+    cy.get(timezonesInput).type(`New `);
     cy.get(timezoneListItem)
       .should('have.length', 2)
-      .should('contain.text', 'New_York')
-      .should('contain.text', 'New_Salem')
+      .should('contain.text', 'New York')
+      .should('contain.text', 'New Salem')
       // first element should be selected
       .first()
       .should('have.class', 'active');
