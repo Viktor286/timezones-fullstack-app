@@ -1,0 +1,21 @@
+.timezones-list li {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    border-radius: 0;
+    color: #555555;
+}
+
+.timezones-list li.active,
+.timezones-list li:hover {
+    background-color: #e6f0ff;
+    color: #1c89ee;;
+    cursor: pointer;
+}
+
+.timezones-list li span.city {
+    /* pass */
+}
+
+.timezones-list li span.region {
+    color: #b9b9b9;
+}

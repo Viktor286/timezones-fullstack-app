@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import AutocompleteDropdown from './AutocompleteDropdown';
+import React, { useState, useCallback } from 'react';
+import TimezoneSelectorList from '../TimezoneSelectorList';
 import { getIanaTimeZones } from '../../model/dateTimeZone';
 import './index.css';
 
@@ -45,12 +45,15 @@ export default function TimezonesSelector({ addClockToList, skipIanaIds }) {
     setTimeout(() => resetTimezonesSelector(), 200);
   };
 
-  const onTimezoneClick = (e) => {
-    const ianaId = e.currentTarget.dataset.iana;
-    if (addClockToList(ianaId)) {
-      resetTimezonesSelector();
-    }
-  };
+  const onTimezoneClick = useCallback(
+    (e) => {
+      const ianaId = e.currentTarget.dataset.iana;
+      if (addClockToList(ianaId)) {
+        resetTimezonesSelector();
+      }
+    },
+    [addClockToList],
+  );
 
   const onInputKey = (e) => {
     if (e.keyCode === 27) {
@@ -85,15 +88,15 @@ export default function TimezonesSelector({ addClockToList, skipIanaIds }) {
         <input
           id="timezones-search"
           type="text"
-          onChange={onInputChange}
-          onKeyDown={onInputKey}
-          onFocus={onInputFocus}
-          onBlur={onInputBlur}
-          value={input}
           placeholder="Input the city"
+          value={input}
+          onBlur={onInputBlur}
+          onFocus={onInputFocus}
+          onKeyDown={onInputKey}
+          onChange={onInputChange}
         />
         {showAutocomplete && (
-          <AutocompleteDropdown {...{ filteredTimezones, selectedZoneIdx, onTimezoneClick }} />
+          <TimezoneSelectorList {...{ filteredTimezones, selectedZoneIdx, onTimezoneClick }} />
         )}
       </div>
     </section>
