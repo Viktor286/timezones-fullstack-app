@@ -14,11 +14,11 @@ export function enhanceIanaStrToReactElement(str) {
 }
 
 export default function AutocompleteDropdown({ filteredTimezones, selectedZoneIdx, onTimezoneClick }) {
-  const selected = useRef();
+  const active = useRef();
 
   useEffect(() => {
-    if (selected.current instanceof HTMLElement) {
-      selected.current.scrollIntoView({ block: 'center' });
+    if (active.current instanceof HTMLElement) {
+      active.current.scrollIntoView({ block: 'center' });
     }
   }, [selectedZoneIdx]);
 
@@ -31,13 +31,7 @@ export default function AutocompleteDropdown({ filteredTimezones, selectedZoneId
       {filteredTimezones.map((timezone, index) => {
         if (index === selectedZoneIdx) {
           return (
-            <li
-              key={timezone}
-              data-iana={timezone}
-              onClick={onTimezoneClick}
-              ref={selected}
-              className="active"
-            >
+            <li key={timezone} data-iana={timezone} onClick={onTimezoneClick} ref={active} className="active">
               {enhanceIanaStrToReactElement(timezone)}
             </li>
           );

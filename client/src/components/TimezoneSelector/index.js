@@ -1,19 +1,24 @@
 import { useState } from 'react';
 import AutocompleteDropdown from './AutocompleteDropdown';
-import { getDateTimeZone, getIanaTimeZones } from '../../model/getDateTimeZone';
+import { getIanaTimeZones } from '../../model/dateTimeZone';
 import './index.css';
 
-const timezones = getIanaTimeZones();
+const timezonesDefault = getIanaTimeZones();
 
-// todo: delete after verification
-console.log('UTC', getDateTimeZone());
-console.log('LOCAL', getDateTimeZone('America/New_York'));
-
-export default function TimezonesSelector() {
+export default function TimezonesSelector({ addClockToList, skipIanaIds }) {
+  const timezones = timezonesDefault.filter((tz) => !skipIanaIds.includes(tz));
   const [input, setInput] = useState('');
   const [selectedZoneIdx, setSelectedZoneIdx] = useState(0);
-  const [filteredTimezones, setFilteredTimezones] = useState([]);
+  const [filteredTimezones, setFilteredTimezones] = useState(timezones);
   const [showAutocomplete, setShowShowAutocomplete] = useState(false);
+
+  const resetTimezonesSelector = () => {
+    setSelectedZoneIdx(0);
+    setFilteredTimezones([]);
+    setShowShowAutocomplete(false);
+    setInput('');
+    document.activeElement.blur();
+  };
 
   const onInputChange = (e) => {
     const inputValue = e.target.value;
@@ -27,20 +32,36 @@ export default function TimezonesSelector() {
     setFilteredTimezones(filtered);
   };
 
+  const onInputFocus = () => {
+    // show all timezones on empty input focus
+    if (input === '') {
+      setFilteredTimezones(timezones);
+      setShowShowAutocomplete(true);
+      setSelectedZoneIdx(0);
+    }
+  };
+
+  const onInputBlur = () => {
+    setTimeout(() => resetTimezonesSelector(), 200);
+  };
+
   const onTimezoneClick = (e) => {
-    setSelectedZoneIdx(0);
-    setFilteredTimezones([]);
-    setInput(e.currentTarget.dataset.iana);
-    setShowShowAutocomplete(false);
+    const ianaId = e.currentTarget.dataset.iana;
+    if (addClockToList(ianaId)) {
+      resetTimezonesSelector();
+    }
   };
 
   const onInputKey = (e) => {
+    if (e.keyCode === 27) {
+      resetTimezonesSelector();
+    }
     // Enter
     if (e.keyCode === 13) {
-      setSelectedZoneIdx(0);
-      setShowShowAutocomplete(false);
-      setInput(filteredTimezones[selectedZoneIdx]);
-      return;
+      const ianaId = filteredTimezones[selectedZoneIdx];
+      if (addClockToList(ianaId)) {
+        resetTimezonesSelector();
+      }
     }
 
     // KeyUp
@@ -61,8 +82,17 @@ export default function TimezonesSelector() {
   return (
     <section className="timezones-selector">
       <div className="adaptive-box">
-        <input type="text" onChange={onInputChange} onKeyDown={onInputKey} value={input} />
-        {showAutocomplete && input && (
+        <input
+          id="timezones-search"
+          type="text"
+          onChange={onInputChange}
+          onKeyDown={onInputKey}
+          onFocus={onInputFocus}
+          onBlur={onInputBlur}
+          value={input}
+          placeholder="Input the city"
+        />
+        {showAutocomplete && (
           <AutocompleteDropdown {...{ filteredTimezones, selectedZoneIdx, onTimezoneClick }} />
         )}
       </div>
