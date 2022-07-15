@@ -6,6 +6,7 @@ describe('Timezone autocomplete list', () => {
   const timezonesInput = 'section.timezones-selector input';
   const timezoneListItem = 'ul.timezones-list li';
   const timezoneClocksList = 'section.timezones-clocks';
+  const pageHeader = 'header';
   const defaultTimezonesLength = 592;
   const resetTimezonesSelectorDelayOnBlur = 200 + 100; // exact value + extra
 
@@ -59,7 +60,7 @@ describe('Timezone autocomplete list', () => {
     cy.focused().should('have.id', 'timezones-search');
     cy.get(timezoneListItem).should('have.length', defaultTimezonesLength);
 
-    cy.get(timezoneClocksList).click();
+    cy.get(pageHeader).click();
     cy.focused().should('not.exist');
     cy.get(timezoneListItem).should('not.exist');
 

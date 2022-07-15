@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import TimezonesSelector from './components/TimezoneSelector';
 import TimezonesClocks from './components/TimezonesClocks';
+import LogoHeader from './components/LogoHeader';
 import { createClockItem } from './model/clockItem';
 import { isValidIanaTimezone } from './model/dateTimeZone';
 
@@ -21,7 +22,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Timezones Clock ⏰</h1>
+      <LogoHeader />
       <TimezonesSelector addClockToList={addClockToList} skipIanaIds={usedIanaIds} />
       <TimezonesClocks clocks={clocks} />
     </div>
