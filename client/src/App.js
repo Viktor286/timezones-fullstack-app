@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import './App.css';
 import TimezonesSelector from './components/TimezoneSelector';
 import TimezonesClocksList from './components/TimezonesClocksList';

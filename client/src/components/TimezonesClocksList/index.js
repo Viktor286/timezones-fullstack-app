@@ -1,5 +1,5 @@
 import './index.css';
-import React, { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import useHeartBeat from '../Hooks/useHeartBeat';
 import TimezonesClockItem, { NoTimezonesClockItem } from '../TimezonesClockItem';
 import TimezonesClockFilterInput from '../TimezonesClockFilterInput';
@@ -9,14 +9,14 @@ export default function TimezonesClocksList({ clocks, removeClockFromList }) {
   const [isClockFilterActive, setIsClockFilterActive] = useState(false);
   const [filterInput, setFilterInput] = useState('');
   const filterClocksInput = useRef();
-  const lastUpdated = useHeartBeat(5); // clocks heartbeat is once in 15 sec
+  const lastUpdated = useHeartBeat(15); // clocks heartbeat is once in 15 sec
 
-  const resetFilter = () => {
+  const resetFilter = useCallback(() => {
     setIsClockFilterActive(false);
     setFilteredClocks(clocks);
     setFilterInput('');
     filterClocksInput.current.value = '';
-  };
+  }, [clocks]);
 
   useEffect(() => {
     if (filterInput.length > 0) {
@@ -30,7 +30,7 @@ export default function TimezonesClocksList({ clocks, removeClockFromList }) {
     }
 
     // if clocks changed, we need recalculate the filteredClocks
-  }, [filterInput, clocks]);
+  }, [filterInput, clocks, resetFilter]);
 
   const clockList = isClockFilterActive ? filteredClocks : clocks;
 
