@@ -57,6 +57,14 @@
     cursor: pointer;
 }
 
+.timezones-list li span.city {
+    /* pass */
+}
+
+.timezones-list li span.region {
+    color: #b9b9b9;
+}
+
 /* disable scrollbar */
 .timezones-list {
     -ms-overflow-style: none; /* for Internet Explorer, Edge */

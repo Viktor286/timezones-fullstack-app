@@ -16,10 +16,12 @@ export default function TimezonesSelector() {
   const [showAutocomplete, setShowShowAutocomplete] = useState(false);
 
   const onInputChange = (e) => {
-    const inoutValue = e.target.value;
-    const filtered = timezones.filter((tz) => tz.toLowerCase().indexOf(inoutValue.toLowerCase()) > -1);
+    const inputValue = e.target.value;
+    const filtered = timezones.filter(
+      (tz) => tz.toLowerCase().indexOf(inputValue.replaceAll(' ', '_').toLowerCase()) > -1,
+    );
 
-    setInput(inoutValue);
+    setInput(inputValue);
     setSelectedZoneIdx(0);
     setShowShowAutocomplete(true);
     setFilteredTimezones(filtered);
@@ -28,7 +30,7 @@ export default function TimezonesSelector() {
   const onTimezoneClick = (e) => {
     setSelectedZoneIdx(0);
     setFilteredTimezones([]);
-    setInput(e.target.innerText);
+    setInput(e.currentTarget.dataset.iana);
     setShowShowAutocomplete(false);
   };
 
