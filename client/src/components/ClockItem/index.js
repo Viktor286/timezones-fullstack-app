@@ -1,6 +1,5 @@
 import React from 'react';
-import { getDateTimeZone } from '../../model/dateTimeZone';
-import { prepareTimeDifferenceStr } from '../../model/clockItem';
+import { getDateTimeZone, prepareTimeDifferenceStr } from '../../model/dateTimeZone';
 import ClockGraphics from '../ClockGraphics';
 import './index.css';
 

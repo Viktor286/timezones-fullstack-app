@@ -4,8 +4,8 @@ import useHeartBeat from '../Hooks/useHeartBeat';
 import ClockItem, { NoClockItem } from '../ClockItem';
 import ClockFilterInput from '../ClockFilterInput';
 
-export default function ClocksList({ clocks, removeClockFromList, heartBeat }) {
-  const [filteredClocks, setFilteredClocks] = useState(clocks);
+export default function ClocksList({ clockList, removeClockFromList, heartBeat }) {
+  const [filteredClocks, setFilteredClocks] = useState(clockList);
   const [isClockFilterActive, setIsClockFilterActive] = useState(false);
   const [filterInput, setFilterInput] = useState('');
   const filterClocksInput = useRef();
@@ -13,14 +13,14 @@ export default function ClocksList({ clocks, removeClockFromList, heartBeat }) {
 
   const resetFilter = useCallback(() => {
     setIsClockFilterActive(false);
-    setFilteredClocks(clocks);
+    setFilteredClocks(clockList);
     setFilterInput('');
     filterClocksInput.current.value = '';
-  }, [clocks]);
+  }, [clockList]);
 
   useEffect(() => {
     if (filterInput.length > 0) {
-      const filteredClocks = clocks.filter(
+      const filteredClocks = clockList.filter(
         (clock) => clock.ianaId.toLowerCase().indexOf(filterInput.replaceAll(' ', '_').toLowerCase()) > -1,
       );
       setFilteredClocks(filteredClocks);
@@ -30,18 +30,18 @@ export default function ClocksList({ clocks, removeClockFromList, heartBeat }) {
     }
 
     // if clocks changed, we need recalculate the filteredClocks
-  }, [filterInput, clocks, resetFilter]);
+  }, [filterInput, clockList, resetFilter]);
 
   // Apply filtering with the isClockFilterActive gate
-  const clockList = isClockFilterActive ? filteredClocks : clocks;
+  const finalClockList = isClockFilterActive ? filteredClocks : clockList;
 
   return (
     <section className="timezones-clocks">
       <ClockFilterInput ref={filterClocksInput} {...{ setFilterInput, resetFilter }} />
       <ul id="clocks-list">
-        {clockList.length ? (
-          clockList.map((el) => {
-            const localIanaId = clockList[0]?.ianaId;
+        {finalClockList.length ? (
+          finalClockList.map((el) => {
+            const localIanaId = finalClockList[0]?.ianaId;
             return (
               <ClockItem
                 key={el.ianaId}

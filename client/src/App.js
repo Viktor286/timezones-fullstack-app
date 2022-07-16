@@ -5,16 +5,22 @@ import ClocksList from './components/ClocksList';
 import LogoHeader from './components/LogoHeader';
 import { createClockItem } from './model/clockItem';
 import { isValidIanaTimezone } from './model/dateTimeZone';
+import { setLocalUserTimezoneList } from './model/localStore';
 
 const defaultClocksList = [createClockItem()];
 
-function App() {
-  const [clocks, setClocksList] = useState(defaultClocksList);
-  const usedIanaIds = clocks.map((e) => e.ianaId);
+function App({ localUserSettings }) {
+  const { timezoneList: localSettingsTimezoneList } = localUserSettings;
+  const [clockList, setClockListList] = useState(localSettingsTimezoneList || defaultClocksList);
+  const usedIanaIds = clockList.map((e) => e.ianaId);
 
   const addClockToList = (ianaId) => {
-    if (isValidIanaTimezone(ianaId) && !clocks.find((el) => el.ianaId === ianaId)) {
-      setClocksList((prevList) => [...prevList, createClockItem(ianaId)]);
+    if (isValidIanaTimezone(ianaId) && !clockList.find((el) => el.ianaId === ianaId)) {
+      setClockListList((prevList) => {
+        const newClockList = [...prevList, createClockItem(ianaId)];
+        setLocalUserTimezoneList(newClockList);
+        return newClockList;
+      });
       return true;
     }
     return false;
@@ -22,27 +28,31 @@ function App() {
 
   const removeClockFromList = (ianaId) => {
     if (isValidIanaTimezone(ianaId)) {
-      setClocksList((prevList) => {
-        return prevList.filter((clock) => {
+      setClockListList((prevList) => {
+        const newClockList = prevList.filter((clock) => {
           // don't delete default clock
           if (clock.ianaId === ianaId && !clock.isLocal) {
             return false;
           }
           return true;
         });
+        setLocalUserTimezoneList(newClockList);
+        return newClockList;
       });
     }
   };
 
   const updateLocalClock = (ianaId) => {
     if (isValidIanaTimezone(ianaId)) {
-      setClocksList((prevList) => {
-        return prevList.map((clock) => {
+      setClockListList((prevList) => {
+        const newClockList = prevList.map((clock) => {
           if (clock.isLocal) {
             clock.ianaId = ianaId;
           }
           return clock;
         });
+        setLocalUserTimezoneList(newClockList);
+        return newClockList;
       });
     }
   };
@@ -55,7 +65,7 @@ function App() {
         addClockToList={addClockToList}
         updateLocalClock={updateLocalClock}
       />
-      <ClocksList removeClockFromList={removeClockFromList} clocks={clocks} />
+      <ClocksList removeClockFromList={removeClockFromList} clockList={clockList} />
     </div>
   );
 }

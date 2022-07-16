@@ -43,3 +43,11 @@ export function detectLocalTimezone() {
 export function isValidIanaTimezone(iana) {
   return cachedTimeZones.includes(iana);
 }
+
+export function prepareTimeDifferenceStr(localUtcOffset, remoteUtcOffset) {
+  const totalOffset = localUtcOffset - remoteUtcOffset;
+  const diffHours = totalOffset / 60;
+  const diffMinutes = Math.abs(totalOffset % 60);
+  const sign = diffHours <= 0 ? '+' : '-';
+  return `${sign}${Math.floor(Math.abs(diffHours))}${diffMinutes !== 0 ? `:${diffMinutes}` : ''}`;
+}
