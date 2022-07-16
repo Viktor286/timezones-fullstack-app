@@ -60,12 +60,12 @@ function App({ localUserSettings }) {
   return (
     <div className="App">
       <LogoHeader />
-      <TimezonesSelector
-        skipIanaIds={usedIanaIds}
-        addClockToList={addClockToList}
+      <TimezonesSelector skipIanaIds={usedIanaIds} addClockToList={addClockToList} />
+      <ClocksList
+        clockList={clockList}
         updateLocalClock={updateLocalClock}
+        removeClockFromList={removeClockFromList}
       />
-      <ClocksList removeClockFromList={removeClockFromList} clockList={clockList} />
     </div>
   );
 }

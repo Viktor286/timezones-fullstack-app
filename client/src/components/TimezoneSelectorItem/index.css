@@ -20,20 +20,3 @@
 .timezones-list li span.region {
     color: #b9b9b9;
 }
-
-button.update-local-clock {
-    display: none;
-}
-
-li.active button.update-local-clock,
-li:hover button.update-local-clock {
-    position: absolute;
-    display: block;
-    right: 10px;
-    top: 5px;
-    border: none;
-    background: none;
-    text-decoration: underline;
-    cursor: pointer;
-    padding: 5px 10px;
-}

@@ -17,14 +17,13 @@ describe('Timezone clock list', () => {
 
   it('should change local clock after click on corresponding button', () => {
     cy.get(timezoneClockListItems).should('have.length', 1).should('contain.text', 'New_York'); // as it should be default;
-
-    cy.get(timezonesInput).click();
-    cy.get(`ul.timezones-list li[data-iana="Africa/Abidjan"] button.update-local-clock`).click();
-
-    cy.get(timezoneClockListItems).should('have.length', 1).should('contain.text', 'Abidjan');
+    cy.get(timezonesInput).type(`Tokyo`).type('{enter}');
+    cy.get('#clocks-list li[data-iana="Asia/Tokyo"] button.update-local-clock').click({ force: true });
+    cy.get(timezoneClockListItems).should('have.length', 1).should('not.contain.text', 'New_York');
+    cy.get(timezoneClockListItems).should('have.length', 1).should('contain.text', 'Asia/Tokyo');
   });
 
-  it('should receive time zones from TimezoneSelector and should be able to remove them', () => {
+  it('should add time zones from TimezoneSelector and should be able to remove them', () => {
     cy.get(timezonesInput).type(`Tokyo`).type('{enter}');
     // await established resetTimezonesSelector delay on blur
     cy.wait(resetTimezonesSelectorDelayOnBlur);

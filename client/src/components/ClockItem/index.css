@@ -6,3 +6,16 @@ ul#clocks-list li {
     justify-content: center;
     align-items: center;
 }
+
+ul#clocks-list li button.update-local-clock {
+    display: none;
+    border: none;
+    background: none;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+ul#clocks-list li:hover button.update-local-clock {
+    display: block;
+}

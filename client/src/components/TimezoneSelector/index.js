@@ -5,7 +5,7 @@ import './index.css';
 
 const timezonesDefault = getIanaTimeZones();
 
-export default function TimezonesSelector({ skipIanaIds, addClockToList, updateLocalClock }) {
+export default function TimezonesSelector({ skipIanaIds, addClockToList }) {
   const timezones = timezonesDefault.filter((tz) => !skipIanaIds.includes(tz));
   const [input, setInput] = useState('');
   const [selectedZoneIdx, setSelectedZoneIdx] = useState(0);
@@ -87,16 +87,6 @@ export default function TimezonesSelector({ skipIanaIds, addClockToList, updateL
     [addClockToList],
   );
 
-  const onUpdateLocalClockClick = useCallback(
-    (e, timezone) => {
-      e.preventDefault();
-      e.stopPropagation();
-      updateLocalClock(timezone);
-      resetTimezonesSelector();
-    },
-    [updateLocalClock],
-  );
-
   return (
     <section className="timezones-selector">
       <div className="adaptive-box">
@@ -117,7 +107,6 @@ export default function TimezonesSelector({ skipIanaIds, addClockToList, updateL
               filteredTimezones,
               selectedZoneIdx,
               onTimezoneClick,
-              onUpdateLocalClockClick,
             }}
           />
         )}

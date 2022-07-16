@@ -3,7 +3,7 @@ import { getDateTimeZone, prepareTimeDifferenceStr } from '../../model/dateTimeZ
 import ClockGraphics from '../ClockGraphics';
 import './index.css';
 
-export default function ClockItem({ clockItem, removeClockFromList, localIana }) {
+export default function ClockItem({ clockItem, removeClockFromList, localIana, updateLocalClock }) {
   const {
     abbr,
     day,
@@ -28,11 +28,21 @@ export default function ClockItem({ clockItem, removeClockFromList, localIana })
         {zoneIana} <br />
         GMT{gmtShift} {day} ({timeDifferenceString})
         {!clockItem.isLocal ? (
-          <button className="remove" onClick={() => removeClockFromList(zoneIana)}>
-            ✕
-          </button>
+          <>
+            <button className="remove" onClick={() => removeClockFromList(zoneIana)}>
+              ✕
+            </button>
+            <button
+              className="update-local-clock"
+              onClick={() => {
+                updateLocalClock(zoneIana);
+                removeClockFromList(zoneIana);
+              }}
+            >
+              🏠 make this your local clock
+            </button>
+          </>
         ) : null}
-        {/* todo move button to clock list^ */}
       </section>
     </li>
   );

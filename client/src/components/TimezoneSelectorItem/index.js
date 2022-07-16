@@ -1,12 +1,7 @@
 import React, { useRef } from 'react';
 import './index.css';
 
-export default React.memo(function TimezoneSelectorItem({
-  timezone,
-  isItemActive,
-  onTimezoneClick,
-  onUpdateLocalClockClick,
-}) {
+export default React.memo(function TimezoneSelectorItem({ timezone, isItemActive, onTimezoneClick }) {
   const listItemRef = useRef();
 
   if (isItemActive && listItemRef.current instanceof HTMLElement) {
@@ -24,9 +19,6 @@ export default React.memo(function TimezoneSelectorItem({
       ref={listItemRef}
       className={isItemActive ? 'active' : ''}
     >
-      <button className="update-local-clock" onClick={(e) => onUpdateLocalClockClick(e, timezone)}>
-        🏠 make this your local clock
-      </button>
       <span className="city">{city}</span>&nbsp;
       <span className="region">{region}</span>
     </li>
