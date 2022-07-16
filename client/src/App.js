@@ -45,12 +45,13 @@ function App({ localUserSettings }) {
   const updateLocalClock = (ianaId) => {
     if (isValidIanaTimezone(ianaId)) {
       setClockListList((prevList) => {
-        const newClockList = prevList.map((clock) => {
-          if (clock.isLocal) {
-            clock.ianaId = ianaId;
-          }
-          return clock;
-        });
+        const targetIdx = prevList.findIndex((e) => e.ianaId === ianaId);
+
+        // trying convention to keep the local zone as always fist object
+        const newClockList = [...prevList];
+        newClockList[0] = createClockItem(ianaId, true);
+        newClockList[targetIdx] = createClockItem(prevList[0].ianaId);
+
         setLocalUserTimezoneList(newClockList);
         return newClockList;
       });
@@ -65,6 +66,7 @@ function App({ localUserSettings }) {
         clockList={clockList}
         updateLocalClock={updateLocalClock}
         removeClockFromList={removeClockFromList}
+        addClockToList={addClockToList}
       />
     </div>
   );

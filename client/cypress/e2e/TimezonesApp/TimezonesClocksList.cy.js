@@ -19,8 +19,8 @@ describe('Timezone clock list', () => {
     cy.get(timezoneClockListItems).should('have.length', 1).should('contain.text', 'New_York'); // as it should be default;
     cy.get(timezonesInput).type(`Tokyo`).type('{enter}');
     cy.get('#clocks-list li[data-iana="Asia/Tokyo"] button.update-local-clock').click({ force: true });
-    cy.get(timezoneClockListItems).should('have.length', 1).should('not.contain.text', 'New_York');
-    cy.get(timezoneClockListItems).should('have.length', 1).should('contain.text', 'Asia/Tokyo');
+    cy.get(timezoneClockListItems).should('have.length', 2).first().should('contain.text', 'Asia/Tokyo');
+    cy.get(timezoneClockListItems).should('have.length', 2).last().should('contain.text', 'New_York');
   });
 
   it('should add time zones from TimezoneSelector and should be able to remove them', () => {
