@@ -1,7 +1,7 @@
 import React from 'react';
 import { getDateTimeZone } from '../../model/dateTimeZone';
 
-export default function TimezonesClockItem({ clockItem, removeClockFromList }) {
+export default function ClockItem({ clockItem, removeClockFromList }) {
   // TODO: add the difference between the browser’s time. GMT not enough?
 
   // abbr: "EDT"
@@ -24,7 +24,7 @@ export default function TimezonesClockItem({ clockItem, removeClockFromList }) {
   );
 }
 
-export function NoTimezonesClockItem({ resetFilter }) {
+export function NoClockItem({ resetFilter }) {
   return (
     <li>
       no clocks to show

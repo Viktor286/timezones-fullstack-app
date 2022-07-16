@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './App.css';
 import TimezonesSelector from './components/TimezoneSelector';
-import TimezonesClocksList from './components/TimezonesClocksList';
+import ClocksList from './components/ClocksList';
 import LogoHeader from './components/LogoHeader';
 import { createClockItem } from './model/clockItem';
 import { isValidIanaTimezone } from './model/dateTimeZone';
@@ -55,7 +55,7 @@ function App() {
         addClockToList={addClockToList}
         updateLocalClock={updateLocalClock}
       />
-      <TimezonesClocksList removeClockFromList={removeClockFromList} clocks={clocks} />
+      <ClocksList removeClockFromList={removeClockFromList} clocks={clocks} />
     </div>
   );
 }

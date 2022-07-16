@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TimezonesClockFilterInput = React.forwardRef(({ setFilterInput, resetFilter }, ref) => {
+const ClockFilterInput = React.forwardRef(({ setFilterInput, resetFilter }, ref) => {
   return (
     <>
       <input
@@ -18,4 +18,4 @@ const TimezonesClockFilterInput = React.forwardRef(({ setFilterInput, resetFilte
   );
 });
 
-export default TimezonesClockFilterInput;
+export default ClockFilterInput;
