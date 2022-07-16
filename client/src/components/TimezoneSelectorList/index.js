@@ -2,7 +2,12 @@ import React from 'react';
 import TimezoneSelectorItem from '../TimezoneSelectorItem';
 import './index.css';
 
-export default function TimezoneSelectorList({ filteredTimezones, selectedZoneIdx, onTimezoneClick }) {
+export default function TimezoneSelectorList({
+  filteredTimezones,
+  selectedZoneIdx,
+  onTimezoneClick,
+  onUpdateLocalClockClick,
+}) {
   if (!filteredTimezones.length) {
     return <p className="timezone-not-found">Timezone not found</p>;
   }
@@ -14,8 +19,9 @@ export default function TimezoneSelectorList({ filteredTimezones, selectedZoneId
           <TimezoneSelectorItem
             key={timezone}
             timezone={timezone}
+            isItemActive={index === selectedZoneIdx}
             onTimezoneClick={onTimezoneClick}
-            isActive={index === selectedZoneIdx}
+            onUpdateLocalClockClick={onUpdateLocalClockClick}
           />
         );
       })}

@@ -5,7 +5,7 @@ import './index.css';
 
 const timezonesDefault = getIanaTimeZones();
 
-export default function TimezonesSelector({ addClockToList, skipIanaIds }) {
+export default function TimezonesSelector({ skipIanaIds, addClockToList, updateLocalClock }) {
   const timezones = timezonesDefault.filter((tz) => !skipIanaIds.includes(tz));
   const [input, setInput] = useState('');
   const [selectedZoneIdx, setSelectedZoneIdx] = useState(0);
@@ -42,18 +42,13 @@ export default function TimezonesSelector({ addClockToList, skipIanaIds }) {
   };
 
   const onInputBlur = () => {
-    setTimeout(() => resetTimezonesSelector(), 200);
-  };
-
-  const onTimezoneClick = useCallback(
-    (e) => {
-      const ianaId = e.currentTarget.dataset.iana;
-      if (addClockToList(ianaId)) {
+    setTimeout(() => {
+      // don't reset selector if we tabbed to update-local-clock button
+      if (!document.activeElement.matches('.update-local-clock')) {
         resetTimezonesSelector();
       }
-    },
-    [addClockToList],
-  );
+    }, 200);
+  };
 
   const onInputKey = (e) => {
     if (e.keyCode === 27) {
@@ -82,21 +77,48 @@ export default function TimezonesSelector({ addClockToList, skipIanaIds }) {
     }
   };
 
+  const onTimezoneClick = useCallback(
+    (e) => {
+      const ianaId = e.currentTarget.dataset.iana;
+      if (addClockToList(ianaId)) {
+        resetTimezonesSelector();
+      }
+    },
+    [addClockToList],
+  );
+
+  const onUpdateLocalClockClick = useCallback(
+    (e, timezone) => {
+      e.preventDefault();
+      e.stopPropagation();
+      updateLocalClock(timezone);
+      resetTimezonesSelector();
+    },
+    [updateLocalClock],
+  );
+
   return (
     <section className="timezones-selector">
       <div className="adaptive-box">
         <input
-          id="timezones-search"
           type="text"
-          placeholder="Input the city"
           value={input}
+          id="timezones-search"
+          placeholder="Input the city"
           onBlur={onInputBlur}
           onFocus={onInputFocus}
           onKeyDown={onInputKey}
           onChange={onInputChange}
         />
         {showAutocomplete && (
-          <TimezoneSelectorList {...{ filteredTimezones, selectedZoneIdx, onTimezoneClick }} />
+          <TimezoneSelectorList
+            {...{
+              filteredTimezones,
+              selectedZoneIdx,
+              onTimezoneClick,
+              onUpdateLocalClockClick,
+            }}
+          />
         )}
       </div>
     </section>

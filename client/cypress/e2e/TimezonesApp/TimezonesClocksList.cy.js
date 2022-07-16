@@ -11,8 +11,17 @@ describe('Timezone clock list', () => {
   it('should contain local clock as default without ability to delete', () => {
     cy.get(timezoneClockListItems)
       .should('have.length', 1)
-      .should('not.contain.text', 'New York') // as it should be default;
-      .should('not.contain.html', 'button');
+      .should('contain.text', 'New_York') // as it should be default;
+      .should('not.contain.html', 'button'); // delete button
+  });
+
+  it('should change local clock after click on corresponding button', () => {
+    cy.get(timezoneClockListItems).should('have.length', 1).should('contain.text', 'New_York'); // as it should be default;
+
+    cy.get(timezonesInput).click();
+    cy.get(`ul.timezones-list li[data-iana="Africa/Abidjan"] button.update-local-clock`).click();
+
+    cy.get(timezoneClockListItems).should('have.length', 1).should('contain.text', 'Abidjan');
   });
 
   it('should receive time zones from TimezoneSelector and should be able to remove them', () => {

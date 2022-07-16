@@ -9,7 +9,7 @@ export default function TimezonesClocksList({ clocks, removeClockFromList }) {
   const [isClockFilterActive, setIsClockFilterActive] = useState(false);
   const [filterInput, setFilterInput] = useState('');
   const filterClocksInput = useRef();
-  const lastUpdated = useHeartBeat(15); // clocks heartbeat is once in 15 sec
+  useHeartBeat(15); // clocks heartbeat is once in 15 sec
 
   const resetFilter = useCallback(() => {
     setIsClockFilterActive(false);
@@ -32,6 +32,7 @@ export default function TimezonesClocksList({ clocks, removeClockFromList }) {
     // if clocks changed, we need recalculate the filteredClocks
   }, [filterInput, clocks, resetFilter]);
 
+  // Apply filtering with the isClockFilterActive gate
   const clockList = isClockFilterActive ? filteredClocks : clocks;
 
   return (
@@ -40,12 +41,7 @@ export default function TimezonesClocksList({ clocks, removeClockFromList }) {
       <ul id="clocks-list">
         {clockList.length ? (
           clockList.map((el) => (
-            <TimezonesClockItem
-              key={el.ianaId}
-              clockItem={el}
-              removeClockFromList={removeClockFromList}
-              lastUpdated={lastUpdated}
-            />
+            <TimezonesClockItem key={el.ianaId} clockItem={el} removeClockFromList={removeClockFromList} />
           ))
         ) : (
           <NoTimezonesClockItem resetFilter={resetFilter} />

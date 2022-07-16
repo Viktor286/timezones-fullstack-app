@@ -1,8 +1,13 @@
 import { detectLocalTimezone } from './dateTimeZone';
 
 export function createClockItem(iana) {
-  return {
-    isLocal: !iana,
+  const clockItem = {
     ianaId: iana || detectLocalTimezone(),
   };
+
+  if (!iana) {
+    clockItem.isLocal = true;
+  }
+
+  return clockItem;
 }

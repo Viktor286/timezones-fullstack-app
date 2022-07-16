@@ -34,10 +34,27 @@ function App() {
     }
   };
 
+  const updateLocalClock = (ianaId) => {
+    if (isValidIanaTimezone(ianaId)) {
+      setClocksList((prevList) => {
+        return prevList.map((clock) => {
+          if (clock.isLocal) {
+            clock.ianaId = ianaId;
+          }
+          return clock;
+        });
+      });
+    }
+  };
+
   return (
     <div className="App">
       <LogoHeader />
-      <TimezonesSelector addClockToList={addClockToList} skipIanaIds={usedIanaIds} />
+      <TimezonesSelector
+        skipIanaIds={usedIanaIds}
+        addClockToList={addClockToList}
+        updateLocalClock={updateLocalClock}
+      />
       <TimezonesClocksList removeClockFromList={removeClockFromList} clocks={clocks} />
     </div>
   );
