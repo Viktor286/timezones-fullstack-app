@@ -40,9 +40,17 @@ export default function ClocksList({ clocks, removeClockFromList }) {
       <ClockFilterInput ref={filterClocksInput} {...{ setFilterInput, resetFilter }} />
       <ul id="clocks-list">
         {clockList.length ? (
-          clockList.map((el) => (
-            <ClockItem key={el.ianaId} clockItem={el} removeClockFromList={removeClockFromList} />
-          ))
+          clockList.map((el) => {
+            const localIanaId = clockList[0]?.ianaId;
+            return (
+              <ClockItem
+                key={el.ianaId}
+                clockItem={el}
+                removeClockFromList={removeClockFromList}
+                localIana={localIanaId}
+              />
+            );
+          })
         ) : (
           <NoClockItem resetFilter={resetFilter} />
         )}

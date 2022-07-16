@@ -1,20 +1,27 @@
 import React from 'react';
 import { getDateTimeZone } from '../../model/dateTimeZone';
+import { prepareTimeDifferenceStr } from '../../model/clockItem';
 
-export default function ClockItem({ clockItem, removeClockFromList }) {
-  // TODO: add the difference between the browser’s time. GMT not enough?
+export default function ClockItem({ clockItem, removeClockFromList, localIana }) {
+  const {
+    abbr,
+    day,
+    gmtShift,
+    meridiem,
+    time,
+    zoneIana,
+    hours,
+    minutes,
+    utcOffset: remoteUtcOffset,
+  } = getDateTimeZone(clockItem.ianaId);
 
-  // abbr: "EDT"
-  // day: "Jul 15th"
-  // gmtShift: "-04:00"
-  // meridiem: "AM"
-  // time: "08:16"
-  // zoneIana: "America/New_York"
-  const { abbr, day, gmtShift, meridiem, time, zoneIana } = getDateTimeZone(clockItem.ianaId);
+  const { utcOffset: localUtcOffset } = getDateTimeZone(localIana);
+  const timeDifferenceString = prepareTimeDifferenceStr(localUtcOffset, remoteUtcOffset);
+
   return (
     <li data-iana={zoneIana}>
-      {time}&nbsp;{meridiem}&nbsp; ({abbr}) &nbsp;
-      {zoneIana} GMT{gmtShift} {day}
+      {time}&nbsp;{meridiem}&nbsp;({hours}:{minutes})&nbsp;({abbr}) &nbsp;
+      {zoneIana} GMT{gmtShift} {day} ({timeDifferenceString})
       {!clockItem.isLocal ? (
         <button className="remove" onClick={() => removeClockFromList(zoneIana)}>
           ✕

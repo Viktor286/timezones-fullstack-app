@@ -29,6 +29,9 @@ function utcToData(moment) {
     zoneIana: moment._z?.name || 'Greenwich', // 'America/New_York'. TODO: is 'Greenwich' ok for 0-GMT ?
     gmtShift: moment.format('Z'), // '-04:00'
     abbr: moment.format('z'), // "PDT"
+    hours: moment.format('HH'), // 23
+    minutes: moment.format('MM'), // 09
+    utcOffset: moment.utcOffset(), // 240
   };
 }
 
