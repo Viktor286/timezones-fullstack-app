@@ -4,12 +4,12 @@ import useHeartBeat from '../Hooks/useHeartBeat';
 import ClockItem, { NoClockItem } from '../ClockItem';
 import ClockFilterInput from '../ClockFilterInput';
 
-export default function ClocksList({ clocks, removeClockFromList }) {
+export default function ClocksList({ clocks, removeClockFromList, heartBeat }) {
   const [filteredClocks, setFilteredClocks] = useState(clocks);
   const [isClockFilterActive, setIsClockFilterActive] = useState(false);
   const [filterInput, setFilterInput] = useState('');
   const filterClocksInput = useRef();
-  useHeartBeat(15); // clocks heartbeat is once in 15 sec
+  useHeartBeat(1); // clocks heartbeat is once in 15 sec
 
   const resetFilter = useCallback(() => {
     setIsClockFilterActive(false);
@@ -48,6 +48,7 @@ export default function ClocksList({ clocks, removeClockFromList }) {
                 clockItem={el}
                 removeClockFromList={removeClockFromList}
                 localIana={localIanaId}
+                heartBeat={heartBeat}
               />
             );
           })

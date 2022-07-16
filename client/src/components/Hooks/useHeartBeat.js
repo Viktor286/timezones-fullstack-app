@@ -8,7 +8,7 @@ export default function useHeartBeat(seconds) {
   clearTimeout(minTimeout.current);
   minTimeout.current = setTimeout(() => {
     const now = new Date().getTime();
-    if (now > lastUpdated + seconds * 1000) {
+    if (now >= lastUpdated + seconds * 1000) {
       setLastUpdated(now);
     }
   }, seconds * 1000);

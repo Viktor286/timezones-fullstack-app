@@ -105,6 +105,7 @@ export default function TimezonesSelector({ skipIanaIds, addClockToList, updateL
           value={input}
           id="timezones-search"
           placeholder="Input the city"
+          autoComplete="off"
           onBlur={onInputBlur}
           onFocus={onInputFocus}
           onKeyDown={onInputKey}

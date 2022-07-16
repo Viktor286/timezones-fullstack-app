@@ -1,0 +1,126 @@
+.clock-graphics {
+    position: relative;
+    min-width: 100px;
+    min-height: 100px;
+    display: block;
+    aspect-ratio: 1;
+    width: 75%;
+    max-width: 200px;
+}
+
+.clock-container {
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    background-color: #303030;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+}
+
+.circle {
+    fill: none;
+    stroke: white;
+    stroke-width: 9;
+    stroke-miterlimit: 10;
+}
+
+.mid-circle {
+    fill: #ffffff;
+}
+
+.hour-marks {
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 10;
+    stroke-miterlimit: 10;
+}
+
+.arm-hour {
+    fill: none;
+    stroke: white;
+    stroke-width: 15;
+    stroke-miterlimit: 10;
+}
+
+.arm-minute {
+    fill: none;
+    stroke: white;
+    stroke-width: 9;
+    stroke-miterlimit: 10;
+}
+
+.arm-second {
+    fill: none;
+    stroke: white;
+    stroke-width: 3;
+    stroke-miterlimit: 10;
+}
+
+.clock-component-hour, .clock-component-minute, .clock-component-second {
+    transform-origin: 300px 300px;
+}
+
+.clock-component-hour, .clock-component-minute {
+    transition: transform .5s ease-in-out;
+}
+
+/* ---------------------- light theme */
+.light-theme .clock-container {
+    background-color: white;
+}
+
+.light-theme .circle {
+    stroke: #303030;
+}
+
+.light-theme .mid-circle {
+    fill: #303030;
+}
+
+.light-theme .hour-marks {
+    stroke: #303030;
+}
+
+.light-theme .arm-hour {
+    stroke: #303030;
+}
+
+.light-theme .arm-minute {
+    stroke: #303030;
+}
+
+.light-theme .arm-second {
+    stroke: #303030;
+}
+
+/* ---------------------- dark theme */
+
+.dark-theme .clock-container {
+    background-color: #303030;
+}
+
+.dark-theme .circle {
+    stroke: white;
+}
+
+.dark-theme .mid-circle {
+    fill: white;
+}
+
+.dark-theme .hour-marks {
+    stroke: white;
+}
+
+.dark-theme .arm-hour {
+    stroke: white;
+}
+
+.dark-theme .arm-minute {
+    stroke: white;
+}
+
+.dark-theme .arm-second {
+    stroke: white;
+}

@@ -8,6 +8,7 @@ const ClockFilterInput = React.forwardRef(({ setFilterInput, resetFilter }, ref)
         name="filter"
         type="text"
         placeholder="filter clocks..."
+        autoComplete="off"
         onChange={(e) => setFilterInput(e.currentTarget.value)}
         ref={ref}
       />{' '}

@@ -21,7 +21,6 @@ export function getDateTimeZone(iana = 'Greenwich') {
 function utcToData(moment) {
   // https://momentjs.com/docs/#/displaying/format/
   // https://momentjs.com/timezone/docs/#/using-timezones/formatting/
-
   return {
     time: moment.format('hh:mm'), // '09:20'
     meridiem: moment.format('A'), // 'PM'
@@ -29,8 +28,9 @@ function utcToData(moment) {
     zoneIana: moment._z?.name || 'Greenwich', // 'America/New_York'. TODO: is 'Greenwich' ok for 0-GMT ?
     gmtShift: moment.format('Z'), // '-04:00'
     abbr: moment.format('z'), // "PDT"
-    hours: moment.format('HH'), // 23
-    minutes: moment.format('MM'), // 09
+    hours: moment.hours(), // 23
+    minutes: moment.minutes(), // 09
+    seconds: moment.seconds(), // 09
     utcOffset: moment.utcOffset(), // 240
   };
 }

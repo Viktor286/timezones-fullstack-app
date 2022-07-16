@@ -1,6 +1,8 @@
 import React from 'react';
 import { getDateTimeZone } from '../../model/dateTimeZone';
 import { prepareTimeDifferenceStr } from '../../model/clockItem';
+import ClockGraphics from '../ClockGraphics';
+import './index.css';
 
 export default function ClockItem({ clockItem, removeClockFromList, localIana }) {
   const {
@@ -12,6 +14,7 @@ export default function ClockItem({ clockItem, removeClockFromList, localIana })
     zoneIana,
     hours,
     minutes,
+    seconds,
     utcOffset: remoteUtcOffset,
   } = getDateTimeZone(clockItem.ianaId);
 
@@ -20,13 +23,18 @@ export default function ClockItem({ clockItem, removeClockFromList, localIana })
 
   return (
     <li data-iana={zoneIana}>
-      {time}&nbsp;{meridiem}&nbsp;({hours}:{minutes})&nbsp;({abbr}) &nbsp;
-      {zoneIana} GMT{gmtShift} {day} ({timeDifferenceString})
-      {!clockItem.isLocal ? (
-        <button className="remove" onClick={() => removeClockFromList(zoneIana)}>
-          ✕
-        </button>
-      ) : null}
+      <ClockGraphics {...{ h: parseInt(hours), m: parseInt(minutes), s: parseInt(seconds) }} />
+      <section>
+        {time}&nbsp;{meridiem}&nbsp;({hours}:{minutes})&nbsp;({abbr}) &nbsp;
+        {zoneIana} <br />
+        GMT{gmtShift} {day} ({timeDifferenceString})
+        {!clockItem.isLocal ? (
+          <button className="remove" onClick={() => removeClockFromList(zoneIana)}>
+            ✕
+          </button>
+        ) : null}
+        {/* todo move button to clock list^ */}
+      </section>
     </li>
   );
 }

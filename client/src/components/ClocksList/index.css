@@ -1,1 +1,19 @@
 /* timezone clocks */
+section.timezones-clocks {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    height: calc(100% - 90px);
+    width: 100%;
+}
+
+ul#clocks-list {
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-rows: repeat(auto-fit, minmax(300px, 1fr));
+    width: 80%;
+    max-width: 1400px;
+}

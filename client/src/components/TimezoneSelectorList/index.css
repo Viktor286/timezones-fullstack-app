@@ -9,6 +9,7 @@
     overflow-y: auto;
     border-radius: 25px;
     background-color: white;
+    z-index: 999;
 }
 
 /* disable scrollbar */
