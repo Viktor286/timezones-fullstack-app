@@ -1,8 +1,9 @@
 import React from 'react';
+import './index.css';
 
-const ClockFilterInput = React.forwardRef(({ setFilterInput, resetFilter }, ref) => {
+const ClockFilterInput = React.forwardRef(({ setFilterInput, resetFilter, filterInput }, ref) => {
   return (
-    <>
+    <div className="clocks-filter-wrapper">
       <input
         id="clocks-filter"
         name="filter"
@@ -11,11 +12,13 @@ const ClockFilterInput = React.forwardRef(({ setFilterInput, resetFilter }, ref)
         autoComplete="off"
         onChange={(e) => setFilterInput(e.currentTarget.value)}
         ref={ref}
-      />{' '}
-      <button className="input-reset-filter" onClick={resetFilter}>
-        reset
-      </button>
-    </>
+      />
+      {filterInput.length > 0 ? (
+        <button className="input-reset-filter" onClick={resetFilter}>
+          reset
+        </button>
+      ) : null}
+    </div>
   );
 });
 

@@ -1,0 +1,41 @@
+div.clocks-filter-wrapper {
+}
+
+input#clocks-filter {
+    padding: 5px 10px;
+    margin: 20px 5px;
+    border: 1px #dadada solid;
+    border-radius: 5px;
+    min-width: 200px;
+    background-color: #fafafa;
+    font-style: italic;
+    font-size: 1rem;
+    line-height: 1rem;
+    height: 2rem;
+}
+input#clocks-filter:focus {
+    outline: #f7f7f7 1px solid;
+    background-color: #ffffff;
+    border-color: #93c1da;
+}
+
+button.input-reset-filter {
+    height: 2rem;
+    margin: 20px 5px 20px 0;
+    padding: 5px 10px;
+    font-size: 1rem;
+    line-height: 1rem;
+    border: 1px #dadada solid;
+    color: #808080;
+    border-radius: 5px;
+    cursor: pointer;
+    font-style: italic;
+    background-color: #fdfdfd;
+    position: absolute;
+}
+
+button.input-reset-filter:hover {
+    outline: #f7f7f7 1px solid;
+    border-color: #a6cce1;
+    color: #3d7fa2;
+}

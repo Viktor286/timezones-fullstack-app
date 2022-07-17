@@ -5,10 +5,18 @@ ul#clocks-list li {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
+    margin-top: 50px;
+}
+
+div.update-local-clock-box {
+    height: 30px;
 }
 
 ul#clocks-list li button.update-local-clock {
     display: none;
+    font-style: italic;
+    color: #989898;
     border: none;
     background: none;
     text-decoration: underline;
@@ -18,4 +26,43 @@ ul#clocks-list li button.update-local-clock {
 
 ul#clocks-list li:hover button.update-local-clock {
     display: block;
+}
+
+section.timezone-title {
+}
+
+section.timezone-title h2 {
+    line-height: 1.5rem;
+    margin: 10px 0 5px;
+}
+
+button.remove {
+    display: inline-block;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    margin: 0 10px;
+    border: 1px #c8c8c8 solid;
+    outline: none;
+    border-radius: 5px;
+    color: grey;
+    cursor: pointer;
+}
+
+button.remove:hover {
+    border-color: #ffad74;
+    color: #ff481f;
+}
+
+section.timezone-numbers {
+    color: #a2a2a2;
+    padding: 5px 10px;
+}
+
+section.timezone-numbers span {
+    font-size: .7rem;
+}
+
+span.gmt {
+    color: #a2a2a2;
 }

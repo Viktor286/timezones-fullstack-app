@@ -37,7 +37,7 @@ export default function ClocksList({ clockList, removeClockFromList, heartBeat, 
 
   return (
     <section className="timezones-clocks">
-      <ClockFilterInput ref={filterClocksInput} {...{ setFilterInput, resetFilter }} />
+      <ClockFilterInput ref={filterClocksInput} {...{ setFilterInput, resetFilter, filterInput }} />
       <ul id="clocks-list">
         {finalClockList.length ? (
           finalClockList.map((el) => {

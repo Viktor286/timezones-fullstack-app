@@ -26,7 +26,7 @@ function utcToData(moment) {
     meridiem: moment.format('A'), // 'PM'
     day: moment.format('MMM Do'), // 'Jul 14th'
     zoneIana: moment._z?.name || 'Greenwich', // 'America/New_York'. TODO: is 'Greenwich' ok for 0-GMT ?
-    gmtShift: moment.format('Z'), // '-04:00'
+    gmtShift: moment.format('z'), // '-04:00'
     abbr: moment.format('z'), // "PDT"
     hours: moment.hours(), // 23
     minutes: moment.minutes(), // 09

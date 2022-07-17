@@ -22,23 +22,30 @@ export default function ClockItem({ clockItem, localIana, removeClockFromList, u
 
   return (
     <li data-iana={zoneIana}>
-      <ClockGraphics {...{ h: parseInt(hours), m: parseInt(minutes), s: parseInt(seconds) }} />
-      <section>
-        {time}&nbsp;{meridiem}&nbsp;({hours}:{minutes})&nbsp;({abbr}) &nbsp;
-        {zoneIana} <br />
-        GMT{gmtShift} {day} ({timeDifferenceString})
+      <div className="update-local-clock-box">
         {clockItem.isLocal ? (
-          <div>(i am here)</div>
+          <div className="i-am-here">(I am here)</div>
         ) : (
-          <>
+          <button className="update-local-clock" onClick={() => updateLocalClock(zoneIana)}>
+            🏠 make this your local clock
+          </button>
+        )}
+      </div>
+
+      <section className="timezone-numbers">{timeDifferenceString}h</section>
+      <ClockGraphics {...{ h: parseInt(hours), m: parseInt(minutes), s: parseInt(seconds) }} />
+      <section className="timezone-title">
+        <h2>
+          {zoneIana}
+          {!clockItem.isLocal ? (
             <button className="remove" onClick={() => removeClockFromList(zoneIana)}>
               ✕
             </button>
-            <button className="update-local-clock" onClick={() => updateLocalClock(zoneIana)}>
-              🏠 make this your local clock
-            </button>
-          </>
-        )}
+          ) : null}
+        </h2>
+        {time}&nbsp;{meridiem} ({abbr}) {day}
+        <br />
+        <span className="gmt">{gmtShift}</span>
       </section>
     </li>
   );
