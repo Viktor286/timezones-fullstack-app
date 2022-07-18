@@ -2,15 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import { getLocalUserSettings } from './model/localStore';
+import { getLocalUserAuth, getLocalUserSettings } from './model/localStore';
 // import reportWebVitals from './reportWebVitals';
 
 const localUserSettings = getLocalUserSettings();
+const localUserAuth = getLocalUserAuth();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <React.StrictMode>
-  <App localUserSettings={localUserSettings} />,
+  <App localUserSettings={localUserSettings} localUserAuth={localUserAuth} />,
   // </React.StrictMode>
 );
 

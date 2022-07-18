@@ -7,7 +7,7 @@ dotenv.config({ path: './env/dev.env' });
 
 describe('Root API /api/v1/', function () {
   it('should give 404', async function () {
-    const response = await fetch('http://localhost:3000/api/v1/', {
+    const response = await fetch('http://localhost:8080/api/v1/', {
       method: 'GET',
       headers: {
         accept: 'application/json',

@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 
 export async function createTestUserRecord() {
-  const response = await fetch('http://localhost:3000/api/v1/users/', {
+  const response = await fetch('http://localhost:8080/api/v1/users/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -18,7 +18,7 @@ export async function createTestUserRecord() {
 }
 
 export async function createTestManagerRecord() {
-  const response = await fetch('http://localhost:3000/api/v1/users/', {
+  const response = await fetch('http://localhost:8080/api/v1/users/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ export async function createTestManagerRecord() {
 }
 
 export async function createTestAdminRecord() {
-  const response = await fetch('http://localhost:3000/api/v1/users/', {
+  const response = await fetch('http://localhost:8080/api/v1/users/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ export async function createTestAdminRecord() {
 }
 
 export async function deleteUserOpenAccessRequest(userEmail) {
-  const response = await fetch(`http://localhost:3000/api/v1/users/${userEmail}`, {
+  const response = await fetch(`http://localhost:8080/api/v1/users/${userEmail}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ export async function deleteUserOpenAccessRequest(userEmail) {
 }
 
 export async function postSignupRequest(body) {
-  const response = await fetch('http://localhost:3000/api/v1/users/signup', {
+  const response = await fetch('http://localhost:8080/api/v1/users/signup', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ export async function postSignupRequest(body) {
 }
 
 export async function postSigninRequest(body) {
-  const response = await fetch('http://localhost:3000/api/v1/users/signin', {
+  const response = await fetch('http://localhost:8080/api/v1/users/signin', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -89,7 +89,7 @@ export async function postSigninRequest(body) {
 }
 
 export async function deleteUserRequest(userEmail) {
-  const response = await fetch(`http://localhost:3000/api/v1/users/${userEmail}`, {
+  const response = await fetch(`http://localhost:8080/api/v1/users/${userEmail}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',

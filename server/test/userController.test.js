@@ -35,7 +35,7 @@ describe('getAllUsers', function () {
     expect(email).toBe('admin@mail.com');
     expect(role).toBe('admin');
 
-    const getAllUsersRes = await fetch('http://localhost:3000/api/v1/users/', {
+    const getAllUsersRes = await fetch('http://localhost:8080/api/v1/users/', {
       method: 'GET',
       credentials: 'include',
       mode: 'no-cors',
@@ -68,7 +68,7 @@ describe('getAllUsers', function () {
     expect(email).toBe('manager@mail.com');
     expect(role).toBe('manager');
 
-    const getAllUsersRes = await fetch('http://localhost:3000/api/v1/users/', {
+    const getAllUsersRes = await fetch('http://localhost:8080/api/v1/users/', {
       method: 'GET',
       credentials: 'include',
       mode: 'no-cors',
@@ -102,7 +102,7 @@ describe('getAllUsers', function () {
     expect(email).toBe('user@mail.com');
     expect(role).toBe('user');
 
-    const getAllUsersRes = await fetch('http://localhost:3000/api/v1/users/', {
+    const getAllUsersRes = await fetch('http://localhost:8080/api/v1/users/', {
       method: 'GET',
       credentials: 'include',
       mode: 'no-cors',

@@ -1,4 +1,25 @@
-const localStorageAppKey = 'timezonesApp';
+const localStorageAppKey = 'timezonesApp.timezones';
+const localStorageAuthKey = 'timezonesApp.auth';
+
+export function getLocalUserAuth() {
+  const localUserAuth = window.localStorage.getItem(localStorageAuthKey);
+  try {
+    return JSON.parse(localUserAuth) || {};
+  } catch (e) {
+    console.error('Local user settings not found');
+    return {};
+  }
+}
+
+export function setLocalUserAuth(auth) {
+  try {
+    window.localStorage.setItem(localStorageAuthKey, JSON.stringify(auth));
+    return true;
+  } catch (e) {
+    console.error('Error occurred while setting local user auth');
+    return false;
+  }
+}
 
 export function getLocalUserSettings() {
   const localUserSettings = window.localStorage.getItem(localStorageAppKey);
