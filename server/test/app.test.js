@@ -1,4 +1,6 @@
 import fetch from 'node-fetch';
+import dotenv from 'dotenv';
+dotenv.config({ path: './env/dev.env' });
 
 // todo: try to spin mongo in memory
 // https://github.com/nodkz/mongodb-memory-server
