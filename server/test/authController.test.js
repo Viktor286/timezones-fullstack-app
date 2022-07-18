@@ -1,4 +1,6 @@
 import { postSignupRequest, postSigninRequest, deleteUserOpenAccessRequest } from './requests.js';
+import dotenv from 'dotenv';
+dotenv.config({ path: './env/dev.env' });
 
 describe('Signup', function () {
   it('should give a 500 if pass confirmation is wrong', async function () {
@@ -102,8 +104,3 @@ describe('Sign in', function () {
     expect(result.message).toEqual('Incorrect email or password');
   });
 });
-
-// getAllUsers
-// -- No authorization found.
-// -- "Permission denied for this role"
-// -- Success for admin

@@ -64,9 +64,3 @@ export function addAccessTokenToCookie(res, token) {
   res.cookie('access_token', token, cookieOptions);
   return res;
 }
-
-// export function allowAccessForRoles(roles, next, currentUser) {
-//   if (!roles.includes(userRole)) {
-//     return next(new ServerError('Permission denied', 403));
-//   }
-// }

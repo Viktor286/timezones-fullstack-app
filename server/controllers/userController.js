@@ -2,21 +2,11 @@ import User from '../model/userModel.js';
 import { authorizeUser, restrictToAuthorizedUsers } from '../auth/index.js';
 import { objectFieldsGate } from '../utils/index.js';
 import ServerError from '../model/errorModel.js';
+import bcrypt from 'bcryptjs';
 
 const c = ServerError.asyncCatch;
 
-export const createUser = c(async (req, res) => {
-  const newUser = await User.create(req.body);
-  res.status(201).json({
-    status: 'success',
-    data: {
-      user: newUser,
-    },
-  });
-});
-
 export const getUser = c(async (req, res, next) => {
-  console.log('getUser');
   const userId = req.params.id;
   const user = await User.find(userId);
 
@@ -34,7 +24,6 @@ export const getUser = c(async (req, res, next) => {
 });
 
 export const updateUser = c(async (req, res, next) => {
-  console.log('updateUser');
   const userProps = objectFieldsGate(req.body, 'email');
 
   const user = await User.findByIdAndUpdate(userId, userProps, {
@@ -54,7 +43,33 @@ export const updateUser = c(async (req, res, next) => {
   });
 });
 
+export const createUser = c(async (req, res, next) => {
+  await restrictToAuthorizedUsers(['admin'], await authorizeUser(req), req, next);
+
+  const { email, password, passwordConfirm, role } = req.body;
+
+  if (!password || password !== passwordConfirm) {
+    return next(new ServerError("Password doesn't look correct", 500));
+  }
+
+  const newUser = await User.create({
+    email,
+    password: await bcrypt.hash(password, 12),
+    role,
+  });
+
+  res.status(201).json({
+    status: 'success',
+    data: {
+      email: newUser.email,
+      role: newUser.role,
+    },
+  });
+});
+
 export const deleteUser = c(async (req, res, next) => {
+  await restrictToAuthorizedUsers(['admin'], await authorizeUser(req), req, next);
+
   const userId = req.params.id;
   const user = await User.findOneAndDelete(userId);
 
@@ -69,9 +84,10 @@ export const deleteUser = c(async (req, res, next) => {
 });
 
 export const getAllUsers = c(async (req, res, next) => {
-  await restrictToAuthorizedUsers(['admin'], await authorizeUser(req), req, next);
+  await restrictToAuthorizedUsers(['admin', 'manager'], await authorizeUser(req), req, next);
 
-  const users = await User.find();
+  const filter = req.user.role === 'admin' ? {} : { role: 'user' };
+  const users = await User.find(filter);
   res.status(200).json({
     status: 'success',
     results: users.length,

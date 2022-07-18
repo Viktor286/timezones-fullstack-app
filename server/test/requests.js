@@ -1,12 +1,55 @@
 import fetch from 'node-fetch';
 
 export async function createTestUserRecord() {
-  const [response, result] = await postSignupRequest({
-    email: 'test-suit-user@mail.com',
-    password: '12312123123',
-    passwordConfirm: '12312123123',
+  const response = await fetch('http://localhost:3000/api/v1/users/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Test-Open-Access': process.env.TEST_OPEN_ACCESS,
+    },
+    body: JSON.stringify({
+      email: 'user@mail.com',
+      password: 'regularUserPass',
+      passwordConfirm: 'regularUserPass',
+    }),
   });
+  const result = await response.json();
+  return [response, result];
+}
 
+export async function createTestManagerRecord() {
+  const response = await fetch('http://localhost:3000/api/v1/users/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Test-Open-Access': process.env.TEST_OPEN_ACCESS,
+    },
+    body: JSON.stringify({
+      email: 'manager@mail.com',
+      password: 'managerPass',
+      passwordConfirm: 'managerPass',
+      role: 'manager',
+    }),
+  });
+  const result = await response.json();
+  return [response, result];
+}
+
+export async function createTestAdminRecord() {
+  const response = await fetch('http://localhost:3000/api/v1/users/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Test-Open-Access': process.env.TEST_OPEN_ACCESS,
+    },
+    body: JSON.stringify({
+      email: 'admin@mail.com',
+      password: 'superAdminPass',
+      passwordConfirm: 'superAdminPass',
+      role: 'admin',
+    }),
+  });
+  const result = await response.json();
   return [response, result];
 }
 
