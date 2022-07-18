@@ -31,7 +31,8 @@ describe('Signup', function () {
   });
 
   it('should success register new user and set token & access_token cookie', async function () {
-    await deleteUserOpenAccessRequest('temp-test-user@mail.com');
+    const deleteRes = await deleteUserOpenAccessRequest('temp-test-user@mail.com');
+    expect(deleteRes.status === 404 || deleteRes.status === 204).toBeTruthy();
 
     const [response, result] = await postSignupRequest({
       email: 'temp-test-user@mail.com',
@@ -50,7 +51,8 @@ describe('Signup', function () {
     const cookie = response.headers.get('set-cookie');
     expect(cookie.startsWith(`access_token=${result.token}`)).toBeTruthy();
 
-    await deleteUserOpenAccessRequest('temp-test-user@mail.com');
+    const cleanupResult = await deleteUserOpenAccessRequest('temp-test-user@mail.com');
+    expect(cleanupResult.status === 404 || cleanupResult.status === 204).toBeTruthy();
   });
 });
 

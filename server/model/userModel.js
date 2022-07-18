@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import validator from 'validator';
 
+export const roles = ['admin', 'manager', 'user'];
+
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -11,7 +13,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['admin', 'manager', 'user'],
+    enum: roles,
     default: 'user',
   },
   password: {
@@ -19,6 +21,10 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Valid password is required'],
     minlength: 8,
     select: false,
+  },
+  timezones: {
+    type: String,
+    default: '[]',
   },
 });
 

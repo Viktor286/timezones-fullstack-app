@@ -10,7 +10,7 @@ router.post('/signin', authController.signin);
 router.route('/').get(userController.getAllUsers).post(userController.createUser);
 
 router
-  .route('/:id')
+  .route('/:email')
   .get(userController.getUser)
   .patch(userController.updateUser)
   .delete(userController.deleteUser);

@@ -5,14 +5,19 @@ import {
   createTestUserRecord,
   createTestAdminRecord,
   createTestManagerRecord,
+  deleteUserOpenAccessRequest,
 } from './requests';
 dotenv.config({ path: './env/dev.env' });
 
 describe('getAllUsers', function () {
   beforeAll(async () => {
-    await createTestAdminRecord();
-    await createTestUserRecord();
-    await createTestManagerRecord();
+    const [adminRes] = await createTestAdminRecord();
+    const [userRes] = await createTestUserRecord();
+    const [managerRes] = await createTestManagerRecord();
+
+    if (adminRes.status !== 201 && managerRes.status === 201 && userRes.status !== 201) {
+      throw new Error("buildup users didn't perform well");
+    }
   });
 
   it('should provide getAllUsers for admins including users and manager', async function () {
@@ -110,5 +115,15 @@ describe('getAllUsers', function () {
     expect(getAllUsersRes.status).toEqual(403);
     const getAllUsersResult = await getAllUsersRes.json();
     expect(getAllUsersResult.message).toEqual('Permission denied for this role');
+  });
+
+  afterAll(async () => {
+    const [adminRes] = await deleteUserOpenAccessRequest('admin@mail.com');
+    const [managerRes] = await deleteUserOpenAccessRequest('manager@mail.com');
+    const [userRes] = await deleteUserOpenAccessRequest('user@mail.com');
+
+    if (adminRes.status !== 204 && managerRes.status === 204 && userRes.status !== 204) {
+      throw new Error("cleanup users didn't perform well");
+    }
   });
 });

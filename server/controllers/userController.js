@@ -1,4 +1,4 @@
-import User from '../model/userModel.js';
+import User, { roles } from '../model/userModel.js';
 import { authorizeUser, restrictToAuthorizedUsers } from '../auth/index.js';
 import { objectFieldsGate } from '../utils/index.js';
 import ServerError from '../model/errorModel.js';
@@ -7,26 +7,53 @@ import bcrypt from 'bcryptjs';
 const c = ServerError.asyncCatch;
 
 export const getUser = c(async (req, res, next) => {
-  const userId = req.params.id;
-  const user = await User.find(userId);
+  await restrictToAuthorizedUsers(['admin', 'manager', 'user'], await authorizeUser(req), req, next);
 
-  if (!user) {
+  const accessAllowedFor = [
+    req.user.email === req.params.email,
+    req.user.role === 'admin',
+    req.user.role === 'manager',
+  ];
+
+  if (!accessAllowedFor.some((val) => val)) {
+    return next(new ServerError('Permission denied', 403));
+  }
+
+  const targetUser = await User.findOne({ _id: req.user._id });
+
+  if (!targetUser) {
     return next(new ServerError('No user found with that ID', 404));
+  }
+
+  if (roles.indexOf(targetUser.role) > roles.indexOf(req.user.role)) {
+    return next(new ServerError('Not enough access rights', 403));
   }
 
   res.status(200).json({
     status: 'success',
-    results: user.length,
+    results: targetUser.length,
     data: {
-      user,
+      user: targetUser,
     },
   });
 });
 
 export const updateUser = c(async (req, res, next) => {
-  const userProps = objectFieldsGate(req.body, 'email');
+  await restrictToAuthorizedUsers(['admin', 'manager', 'user'], await authorizeUser(req), req, next);
 
-  const user = await User.findByIdAndUpdate(userId, userProps, {
+  const accessAllowedFor = [
+    req.user.email === req.params.email,
+    req.user.role === 'admin',
+    req.user.role === 'manager',
+  ];
+
+  if (!accessAllowedFor.some((val) => val)) {
+    return next(new ServerError('Permission denied', 403));
+  }
+
+  const propsAllowedForUpdate = objectFieldsGate(req.body, 'timezones');
+
+  const user = await User.findByIdAndUpdate({ _id: req.user._id }, propsAllowedForUpdate, {
     new: true,
     runValidators: true,
   });
@@ -70,7 +97,7 @@ export const createUser = c(async (req, res, next) => {
 export const deleteUser = c(async (req, res, next) => {
   await restrictToAuthorizedUsers(['admin'], await authorizeUser(req), req, next);
 
-  const userId = req.params.id;
+  const userId = req.params.email;
   const user = await User.findOneAndDelete(userId);
 
   if (!user) {
