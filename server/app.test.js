@@ -1,12 +1,22 @@
-import request from 'supertest';
-import createExpressApp from './app.js';
+import fetch from 'node-fetch';
 
-const app = createExpressApp();
+// todo: try to spin mongo in memory
+// https://github.com/nodkz/mongodb-memory-server
 
-describe('GET /users', function () {
+describe('GET /api/v1/users', function () {
   it('responds with json', async function () {
-    const response = await request(app).get('/');
-    expect(response.headers['content-type']).toMatch(/json/);
+    const response = await fetch('http://localhost:3000/api/v1/users', {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+      },
+    });
+
+    const result = await response.json();
+
+    expect(response.headers.get('content-type')).toMatch(/json/);
     expect(response.status).toEqual(200);
+    expect(result.status).toEqual('success');
+    expect(result.data).toBeTruthy();
   });
 });
