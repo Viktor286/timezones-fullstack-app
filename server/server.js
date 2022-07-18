@@ -1,10 +1,21 @@
+import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import createExpressApp from './app.js';
 
-dotenv.config({ path: './main.env' });
+dotenv.config({ path: process.env.NODE_ENV === 'prod' ? './env/prod.env' : './env/dev.env' });
 
-const app = createExpressApp();
+async function main() {
+  try {
+    await mongoose.connect(process.env.DATABASE, {
+      useNewUrlParser: true,
+    });
 
-app.listen(process.env.PORT, () => {
-  console.log(`Listening on ${process.env.PORT}`);
-});
+    createExpressApp().listen(process.env.PORT, () => {
+      console.log(`Listening on ${process.env.PORT}`);
+    });
+  } catch (e) {
+    console.error('Something went wrong on server initialization', e.name, e.message);
+  }
+}
+
+main();
