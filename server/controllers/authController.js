@@ -19,7 +19,6 @@ export const signup = c(async (req, res, next) => {
 
   const token = createJwtToken(newUser._id);
   addAccessTokenToCookie(res, token);
-
   res.status(201).json({
     status: 'success',
     token,

@@ -9,7 +9,7 @@ export default function ClocksList({ clockList, removeClockFromList, heartBeat, 
   const [isClockFilterActive, setIsClockFilterActive] = useState(false);
   const [filterInput, setFilterInput] = useState('');
   const filterClocksInput = useRef();
-  useHeartBeat(1); // clocks heartbeat is once in 15 sec
+  useHeartBeat(1); // clocks heartbeat is once in 1 sec
 
   const resetFilter = useCallback(() => {
     setIsClockFilterActive(false);

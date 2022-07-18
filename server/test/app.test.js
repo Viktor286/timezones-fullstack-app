@@ -5,9 +5,9 @@ dotenv.config({ path: './env/dev.env' });
 // todo: try to spin mongo in memory
 // https://github.com/nodkz/mongodb-memory-server
 
-describe('GET /api/v1/users', function () {
-  it('responds with json', async function () {
-    const response = await fetch('http://localhost:3000/api/v1/users', {
+describe('Root API /api/v1/', function () {
+  it('should give 404', async function () {
+    const response = await fetch('http://localhost:3000/api/v1/', {
       method: 'GET',
       headers: {
         accept: 'application/json',
@@ -15,10 +15,7 @@ describe('GET /api/v1/users', function () {
     });
 
     const result = await response.json();
-
-    expect(response.headers.get('content-type')).toMatch(/json/);
-    expect(response.status).toEqual(200);
-    expect(result.status).toEqual('success');
-    expect(result.data).toBeTruthy();
+    const code = result.error.statusCode;
+    expect(code).toEqual(404);
   });
 });

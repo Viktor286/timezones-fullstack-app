@@ -1,4 +1,5 @@
 import User from '../model/userModel.js';
+import { authorizeUser, restrictToAuthorizedUsers } from '../auth/index.js';
 import { objectFieldsGate } from '../utils/index.js';
 import ServerError from '../model/errorModel.js';
 
@@ -54,9 +55,6 @@ export const updateUser = c(async (req, res, next) => {
 });
 
 export const deleteUser = c(async (req, res, next) => {
-  // todo: limit access based on role and Test-Open-Access:
-  //   const testerAccess = req.header('Test-Open-Access') === process.env.TEST_OPEN_ACCESS;
-
   const userId = req.params.id;
   const user = await User.findOneAndDelete(userId);
 
@@ -71,7 +69,8 @@ export const deleteUser = c(async (req, res, next) => {
 });
 
 export const getAllUsers = c(async (req, res, next) => {
-  console.log('getAllUsers');
+  await restrictToAuthorizedUsers(['admin'], await authorizeUser(req), req, next);
+
   const users = await User.find();
   res.status(200).json({
     status: 'success',

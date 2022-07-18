@@ -1,4 +1,4 @@
-import { postSignupRequest, postSigninRequest, deleteUserRequest } from './requests.js';
+import { postSignupRequest, postSigninRequest, deleteUserOpenAccessRequest } from './requests.js';
 
 describe('Signup', function () {
   it('should give a 500 if pass confirmation is wrong', async function () {
@@ -29,7 +29,7 @@ describe('Signup', function () {
   });
 
   it('should success register new user and set token & access_token cookie', async function () {
-    await deleteUserRequest('temp-test-user@mail.com');
+    await deleteUserOpenAccessRequest('temp-test-user@mail.com');
 
     const [response, result] = await postSignupRequest({
       email: 'temp-test-user@mail.com',
@@ -48,7 +48,7 @@ describe('Signup', function () {
     const cookie = response.headers.get('set-cookie');
     expect(cookie.startsWith(`access_token=${result.token}`)).toBeTruthy();
 
-    await deleteUserRequest('temp-test-user@mail.com');
+    await deleteUserOpenAccessRequest('temp-test-user@mail.com');
   });
 });
 
@@ -102,3 +102,8 @@ describe('Sign in', function () {
     expect(result.message).toEqual('Incorrect email or password');
   });
 });
+
+// getAllUsers
+// -- No authorization found.
+// -- "Permission denied for this role"
+// -- Success for admin
