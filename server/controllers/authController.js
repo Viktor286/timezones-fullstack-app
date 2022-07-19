@@ -1,7 +1,13 @@
 import bcrypt from 'bcryptjs';
 import User from '../model/userModel.js';
 import ServerError from '../model/errorModel.js';
-import { createJwtToken, addAccessTokenToCookie } from '../auth/index.js';
+import {
+  createJwtToken,
+  addAccessTokenToCookie,
+  createExpiredJwtToken,
+  restrictToAuthorizedUsers,
+  authorizeUser,
+} from '../auth/index.js';
 
 const c = ServerError.asyncCatch;
 
@@ -57,4 +63,19 @@ export const signin = c(async (req, res, next) => {
   });
 });
 
-export default { signup, signin };
+export const logout = c(async (req, res, next) => {
+  const auth = await restrictToAuthorizedUsers(
+    ['admin', 'manager', 'user'],
+    await authorizeUser(req),
+    req,
+  );
+  if (!auth || auth instanceof ServerError) return next(auth);
+
+  // todo: we may need to store logged-out tokens and check disposed ones
+
+  const token = createExpiredJwtToken(req.user._id);
+  addAccessTokenToCookie(res, token, 1);
+  res.status(200).json({ status: 'success', token });
+});
+
+export default { signup, signin, logout };

@@ -9,6 +9,10 @@ export function createJwtToken(id) {
   });
 }
 
+export function createExpiredJwtToken(id) {
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: 1 });
+}
+
 export async function authorizeUser(req) {
   if (req.header('Test-Open-Access') === process.env.TEST_OPEN_ACCESS) {
     req.user = {
@@ -18,7 +22,7 @@ export async function authorizeUser(req) {
       __v: 0,
     };
 
-    return;
+    return req.user;
   }
 
   req.user = undefined;
@@ -31,6 +35,11 @@ export async function authorizeUser(req) {
 
   const token = await promisify(jwt.verify)(rawToken, process.env.JWT_SECRET);
 
+  const currentTimeSec = Math.floor(Date.now() / 1000);
+  if (token.exp <= currentTimeSec) {
+    return new ServerError('Token expired', 401);
+  }
+
   const currentUser = await User.findById(token.id);
 
   if (!currentUser) {
@@ -38,26 +47,31 @@ export async function authorizeUser(req) {
   }
 
   req.user = currentUser;
+  return currentUser;
 }
 
-export async function restrictToAuthorizedUsers(allowedRoles, authResult, req, next) {
+export async function restrictToAuthorizedUsers(allowedRoles, authResult, req) {
   if (authResult instanceof ServerError) {
-    return next(authResult);
+    return authResult;
   }
 
   // todo: better to check the class instance
   if (typeof req.user._id !== 'object') {
-    return next(new ServerError('Authorization required.', 401));
+    return new ServerError('Authorization required.', 401);
   }
 
   if (!allowedRoles.includes(req.user.role)) {
-    return next(new ServerError('Permission denied for this role', 403));
+    return new ServerError('Permission denied for this role', 403);
   }
+
+  return authResult;
 }
 
-export function addAccessTokenToCookie(res, token) {
+export function addAccessTokenToCookie(res, token, expiresIn) {
   const cookieOptions = {
-    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
+    expires: expiresIn
+      ? new Date(Date.now() + expiresIn)
+      : new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
     httpOnly: true,
   };
   if (process.env.NODE_ENV === 'prod') cookieOptions.secure = true;

@@ -7,7 +7,12 @@ import bcrypt from 'bcryptjs';
 const c = ServerError.asyncCatch;
 
 export const getUser = c(async (req, res, next) => {
-  await restrictToAuthorizedUsers(['admin', 'manager', 'user'], await authorizeUser(req), req, next);
+  const auth = await restrictToAuthorizedUsers(
+    ['admin', 'manager', 'user'],
+    await authorizeUser(req),
+    req,
+  );
+  if (!auth || auth instanceof ServerError) return next(auth);
 
   const accessAllowedFor = [
     req.user.email === req.params.email,
@@ -39,7 +44,12 @@ export const getUser = c(async (req, res, next) => {
 });
 
 export const updateUser = c(async (req, res, next) => {
-  await restrictToAuthorizedUsers(['admin', 'manager', 'user'], await authorizeUser(req), req, next);
+  const auth = await restrictToAuthorizedUsers(
+    ['admin', 'manager', 'user'],
+    await authorizeUser(req),
+    req,
+  );
+  if (!auth || auth instanceof ServerError) return next(auth);
 
   const accessAllowedFor = [
     req.user.email === req.params.email,
@@ -71,7 +81,8 @@ export const updateUser = c(async (req, res, next) => {
 });
 
 export const createUser = c(async (req, res, next) => {
-  await restrictToAuthorizedUsers(['admin'], await authorizeUser(req), req, next);
+  const auth = await restrictToAuthorizedUsers(['admin'], await authorizeUser(req), req);
+  if (!auth || auth instanceof ServerError) return next(auth);
 
   const { email, password, passwordConfirm, role } = req.body;
 
@@ -95,7 +106,8 @@ export const createUser = c(async (req, res, next) => {
 });
 
 export const deleteUser = c(async (req, res, next) => {
-  await restrictToAuthorizedUsers(['admin'], await authorizeUser(req), req, next);
+  const auth = await restrictToAuthorizedUsers(['admin'], await authorizeUser(req), req);
+  if (!auth || auth instanceof ServerError) return next(auth);
 
   const userId = req.params.email;
   const user = await User.findOneAndDelete(userId);
@@ -111,7 +123,8 @@ export const deleteUser = c(async (req, res, next) => {
 });
 
 export const getAllUsers = c(async (req, res, next) => {
-  await restrictToAuthorizedUsers(['admin', 'manager'], await authorizeUser(req), req, next);
+  const auth = await restrictToAuthorizedUsers(['admin', 'manager'], await authorizeUser(req), req);
+  if (!auth || auth instanceof ServerError) return next(auth);
 
   const filter = req.user.role === 'admin' ? {} : { role: 'user' };
   const users = await User.find(filter);

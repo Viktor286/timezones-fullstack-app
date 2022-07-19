@@ -8,6 +8,7 @@ import { createClockItem } from './model/clockItem';
 import { isValidIanaTimezone } from './model/dateTimeZone';
 import { setLocalUserTimezoneList } from './model/localStore';
 import { getUserTimezones, setUserTimezones } from './requests/user';
+import { parseJwt } from './utils/misc.js';
 
 const defaultClocksList = [createClockItem()];
 
@@ -66,20 +67,29 @@ function App({ localUserSettings, localUserAuth }) {
   };
 
   useEffect(() => {
-    const getUserData = async () => {
-      const timezones = await getUserTimezones(auth);
-      if (timezones.length > 0) {
-        setClockListList(timezones);
-      }
-    };
+    if (auth.token) {
+      const getUserData = async () => {
+        const timezones = await getUserTimezones(auth);
+        if (timezones.length > 0) {
+          setClockListList(timezones);
+        }
+      };
 
-    if (auth.token) getUserData();
+      // todo: we should verify signature of the jwt to ensure it hasn't been tempered
+      const token = parseJwt(auth.token);
+      const currentTimeSec = Math.floor(Date.now() / 1000);
+      if (token.exp <= currentTimeSec) {
+        // Token expired
+      } else {
+        getUserData();
+      }
+    }
   }, [auth]);
 
   return (
     <div className="App">
       <LogoHeader />
-      <LoginForm auth={auth} setAuth={setAuth} />
+      <LoginForm auth={auth} setAuth={setAuth} setClockListList={setClockListList} />
       <TimezonesSelector skipIanaIds={usedIanaIds} addClockToList={addClockToList} />
       <ClocksList
         clockList={clockList}

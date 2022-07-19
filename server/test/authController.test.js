@@ -51,8 +51,8 @@ describe('Signup', function () {
     const cookie = response.headers.get('set-cookie');
     expect(cookie.startsWith(`access_token=${result.token}`)).toBeTruthy();
 
-    const cleanupResult = await deleteUserOpenAccessRequest('temp-test-user@mail.com');
-    expect(cleanupResult.status === 404 || cleanupResult.status === 204).toBeTruthy();
+    // const cleanupResult = await deleteUserOpenAccessRequest('temp-test-user@mail.com');
+    // expect(cleanupResult.status === 404 || cleanupResult.status === 204).toBeTruthy();
   });
 });
 
