@@ -1,10 +1,12 @@
 // todo: reset auth if breaking code received
+const baseDomain = 'http://localhost:8080';
+
 export async function getUserTimezones(auth) {
   const { email, token } = auth;
 
   if (email && token?.length > 30) {
     try {
-      const userDataRes = await fetch(`http://localhost:8080/api/v1/users/${email}`, {
+      const userDataRes = await fetch(`${baseDomain}/api/v1/users/${email}`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -41,7 +43,7 @@ export async function setUserTimezones(newClockList, auth) {
         timezones: JSON.stringify(newClockList),
       });
 
-      const userDataRes = await fetch(`http://localhost:8080/api/v1/users/${email}`, {
+      const userDataRes = await fetch(`${baseDomain}/api/v1/users/${email}`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -60,7 +62,7 @@ export async function setUserTimezones(newClockList, auth) {
 
 export async function signInUser(email, password) {
   try {
-    const response = await fetch('http://localhost:8080/api/v1/users/signin', {
+    const response = await fetch(`${baseDomain}/api/v1/users/signin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -76,12 +78,31 @@ export async function signInUser(email, password) {
   }
 }
 
+export async function signUpUser(email, password, passwordConfirm) {
+  try {
+    const response = await fetch(`${baseDomain}/api/v1/users/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        passwordConfirm,
+      }),
+    });
+    return await response.json();
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 export async function logOutUser(auth) {
   const { token } = auth;
 
   if (token) {
     try {
-      const response = await fetch('http://localhost:8080/api/v1/users/logout', {
+      const response = await fetch(`${baseDomain}/api/v1/users/logout`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
