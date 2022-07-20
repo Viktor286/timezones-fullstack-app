@@ -18,16 +18,16 @@ export default (err, req, res, next) => {
         break;
 
       case 'JsonWebTokenError':
-        error = new ServerError('Invalid token. Please log in again!', 401);
+        error = new ServerError('Invalid token. Try to log in again.', 401);
         break;
 
       case 'TokenExpiredError':
-        error = new ServerError('Your token has expired! Please log in again.', 401);
+        error = new ServerError('Token has expired. Try to log in again.', 401);
         break;
     }
 
     if (err.code === 11000) {
-      error = new ServerError(`Duplicate field value: ${err.errmsg}. Please use another value!`, 400);
+      error = new ServerError(`Duplicate field value: ${err.errmsg}.`, 400);
     }
 
     responseErrorProd(error, res);

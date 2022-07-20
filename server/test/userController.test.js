@@ -9,6 +9,23 @@ import {
 } from './requests';
 dotenv.config({ path: './env/dev.env' });
 
+const baseDomain = 'http://localhost:8080';
+
+const adminUser = {
+  email: 'admin@mail.com',
+  password: 'superAdminPass',
+};
+
+const managerUser = {
+  email: 'manager@mail.com',
+  password: 'managerPass',
+};
+
+const userUser = {
+  email: 'user@mail.com',
+  password: 'regularUserPass',
+};
+
 describe('getAllUsers', function () {
   beforeAll(async () => {
     const [adminRes] = await createTestAdminRecord();
@@ -22,8 +39,8 @@ describe('getAllUsers', function () {
 
   it('should provide getAllUsers for admins including users and manager', async function () {
     const [response, result] = await postSigninRequest({
-      email: 'admin@mail.com',
-      password: 'superAdminPass',
+      email: adminUser.email,
+      password: adminUser.password,
     });
 
     const { token, status, data } = result;
@@ -32,10 +49,10 @@ describe('getAllUsers', function () {
     expect(response.status).toEqual(200);
 
     const { email, role } = data.user;
-    expect(email).toBe('admin@mail.com');
+    expect(email).toBe(adminUser.email);
     expect(role).toBe('admin');
 
-    const getAllUsersRes = await fetch('http://localhost:8080/api/v1/users/', {
+    const getAllUsersRes = await fetch(`${baseDomain}/api/v1/users/`, {
       method: 'GET',
       credentials: 'include',
       mode: 'no-cors',
@@ -55,8 +72,8 @@ describe('getAllUsers', function () {
 
   it('should provide getAllUsers for managers including only users', async function () {
     const [response, result] = await postSigninRequest({
-      email: 'manager@mail.com',
-      password: 'managerPass',
+      email: managerUser.email,
+      password: managerUser.password,
     });
 
     const { token, status, data } = result;
@@ -65,10 +82,10 @@ describe('getAllUsers', function () {
     expect(response.status).toEqual(200);
 
     const { email, role } = data.user;
-    expect(email).toBe('manager@mail.com');
+    expect(email).toBe(managerUser.email);
     expect(role).toBe('manager');
 
-    const getAllUsersRes = await fetch('http://localhost:8080/api/v1/users/', {
+    const getAllUsersRes = await fetch(`${baseDomain}/api/v1/users/`, {
       method: 'GET',
       credentials: 'include',
       mode: 'no-cors',
@@ -89,8 +106,8 @@ describe('getAllUsers', function () {
 
   it('should not provide getAllUsers for users', async function () {
     const [response, result] = await postSigninRequest({
-      email: 'user@mail.com',
-      password: 'regularUserPass',
+      email: userUser.email,
+      password: userUser.password,
     });
 
     const { token, status, data } = result;
@@ -99,10 +116,10 @@ describe('getAllUsers', function () {
     expect(response.status).toEqual(200);
 
     const { email, role } = data.user;
-    expect(email).toBe('user@mail.com');
+    expect(email).toBe(userUser.email);
     expect(role).toBe('user');
 
-    const getAllUsersRes = await fetch('http://localhost:8080/api/v1/users/', {
+    const getAllUsersRes = await fetch(`${baseDomain}/api/v1/users/`, {
       method: 'GET',
       credentials: 'include',
       mode: 'no-cors',
@@ -118,9 +135,9 @@ describe('getAllUsers', function () {
   });
 
   afterAll(async () => {
-    const [adminRes] = await deleteUserOpenAccessRequest('admin@mail.com');
-    const [managerRes] = await deleteUserOpenAccessRequest('manager@mail.com');
-    const [userRes] = await deleteUserOpenAccessRequest('user@mail.com');
+    const [adminRes] = await deleteUserOpenAccessRequest(adminUser.email);
+    const [managerRes] = await deleteUserOpenAccessRequest(managerUser.email);
+    const [userRes] = await deleteUserOpenAccessRequest(userUser.email);
 
     if (adminRes.status !== 204 && managerRes.status === 204 && userRes.status !== 204) {
       throw new Error("cleanup users didn't perform well");

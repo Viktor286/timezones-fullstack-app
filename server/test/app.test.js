@@ -2,12 +2,14 @@ import fetch from 'node-fetch';
 import dotenv from 'dotenv';
 dotenv.config({ path: './env/dev.env' });
 
+const baseDomain = 'http://localhost:8080';
+
 // todo: try to spin mongo in memory
 // https://github.com/nodkz/mongodb-memory-server
 
 describe('Root API /api/v1/', function () {
   it('should give 404', async function () {
-    const response = await fetch('http://localhost:8080/api/v1/', {
+    const response = await fetch(`${baseDomain}/api/v1/`, {
       method: 'GET',
       headers: {
         accept: 'application/json',

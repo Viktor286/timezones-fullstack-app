@@ -1,4 +1,4 @@
-// todo: reset auth if breaking code received
+// todo: reset auth if breaking http code received
 const baseDomain = 'http://localhost:8080';
 
 export async function getUserTimezones(auth) {
