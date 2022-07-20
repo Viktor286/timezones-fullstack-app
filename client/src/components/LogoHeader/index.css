@@ -2,4 +2,6 @@ header.logo-header {
     display: block;
     height: 50px;
     overflow: hidden;
+    font-weight: normal;
+    color: #8c8c8c;
 }

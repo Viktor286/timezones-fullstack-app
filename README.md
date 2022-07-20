@@ -1,10 +1,29 @@
-# Getting Started with Create React App
+# Timezones App
+
+This is a challenge project to make fullstack app in 20-hours.
+The app has login system and shows the time in different timezones.
+Based on MERN stack.
+
+## To run
+In order to run locally execute next scripts.
+
+In the `client/` project directory run: `npm start`
+
+In the `server/` project directory run: `npm start`
+
+For the more details please refer to:
+
+`client/package.json` 
+`server/package.json` 
+
+
+## Client-side
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
-In the project directory, you can run:
+In the `client/` project directory, you can run:
 
 ### `npm start`
 
