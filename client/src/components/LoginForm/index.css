@@ -1,0 +1,58 @@
+section.login-form {
+    min-height: 80px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 10px;
+}
+
+section.login-form.logged-in {
+    min-height: 0px;
+}
+
+section.login-form form {
+    max-width: 500px;
+    border-radius: 10px;
+    margin-left: -100px;
+}
+
+section.login-form form > div {
+    width: 400px;
+    /*background-color: blue;*/
+    margin: 0 auto;
+}
+
+section.login-form form > div > label,
+section.login-form form > div > div.login-button-margin
+{
+    width: 70px;
+    display: inline-block;
+    /*background-color: yellow;*/
+    text-align: left;
+    font-size: .8rem;
+    margin: 0 10px;
+}
+
+section.login-form form > div > input {
+    width: 180px;
+    display: inline-block;
+}
+
+input.bt-login, input.bt-singup {
+    min-width: 100px;
+}
+
+button.bt-or-singup, button.bt-or-login, button.bt-logout {
+    background: none;
+    /*outline: none;*/
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+    position: absolute;
+    margin: 5px 0 0 10px;
+}
+
+div.login-status {
+    font-style: italic;
+    color: #ff4300;
+}

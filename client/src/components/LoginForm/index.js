@@ -2,11 +2,17 @@ import { setLocalUserAuth, setLocalUserSettings } from '../../model/localStore';
 import { signInUser, logOutUser, signUpUser } from '../../requests/user';
 import { createClockItem } from '../../model/clockItem';
 import { useState } from 'react';
+import './index.css';
 
 const defaultClocksList = [createClockItem()];
 
-function LoginFormWrapper({ children }) {
-  return <section className="login-form">{children}</section>;
+function LoginFormWrapper({ loginStatus, children, auth }) {
+  return (
+    <>
+      <section className={`login-form ${auth.email ? 'logged-in' : null}`}>{children}</section>
+      {loginStatus ? <div className="login-status">{loginStatus}</div> : null}
+    </>
+  );
 }
 
 export default function LoginForm({ auth, setAuth, setClockListList }) {
@@ -20,9 +26,14 @@ export default function LoginForm({ auth, setAuth, setClockListList }) {
     const email = formData.get('email');
     const password = formData.get('password');
     const { token } = await signInUser(email, password);
-    setLocalUserAuth({ token, email });
-    setAuth({ token, email });
-    setLoginLayout('logged-in');
+    if (token) {
+      setLocalUserAuth({ token, email });
+      setAuth({ token, email });
+      setLoginLayout('logged-in');
+      setLoginStatus('');
+    } else {
+      setLoginStatus('Looks like there is no such user');
+    }
   };
 
   const onSingupSubmitHandler = async (e) => {
@@ -38,6 +49,7 @@ export default function LoginForm({ auth, setAuth, setClockListList }) {
       setLocalUserAuth({ token, email });
       setAuth({ token, email });
       setLoginLayout('logged-in');
+      setLoginStatus('');
     } else {
       setLoginStatus('Please insert correct confirmation');
     }
@@ -64,31 +76,42 @@ export default function LoginForm({ auth, setAuth, setClockListList }) {
       setClockListList(defaultClocksList);
       setAuth({});
       setLoginLayout('login');
+      setLoginStatus('');
     }
   };
 
   if (loginLayout === 'logged-in') {
     return (
-      <LoginFormWrapper>
-        ({auth.email}) <button onClick={logOut}>log out</button>
+      <LoginFormWrapper loginStatus={loginStatus} auth={auth}>
+        <div className="logged-in-indicator">
+          {auth.email}
+          <button onClick={logOut} className="bt-logout">
+            (log out)
+          </button>
+        </div>
       </LoginFormWrapper>
     );
   }
 
   if (loginLayout === 'login') {
     return (
-      <LoginFormWrapper>
+      <LoginFormWrapper loginStatus={loginStatus} auth={auth}>
         <form onSubmit={onLoginSubmitHandler}>
           <div>
             <label htmlFor="username">Email:</label>
             <input name="email" type="email" id="email" size="30" required />
           </div>
           <div>
-            <label htmlFor="pass">Password (8 characters minimum):</label>
+            <label htmlFor="password">Password:</label>
             <input type="password" name="password" minLength="8" required />
           </div>
-          <input type="submit" value="Sign in" />
-          <button onClick={onPickSignup}>or sign up</button>
+          <div>
+            <div className="login-button-margin">&nbsp;</div>
+            <input className="bt-login" type="submit" value="Login" />
+            <button onClick={onPickSignup} className="bt-or-singup">
+              (or sign up)
+            </button>
+          </div>
         </form>
       </LoginFormWrapper>
     );
@@ -96,23 +119,27 @@ export default function LoginForm({ auth, setAuth, setClockListList }) {
 
   if (loginLayout === 'signup') {
     return (
-      <LoginFormWrapper>
+      <LoginFormWrapper loginStatus={loginStatus} auth={auth}>
         <form onSubmit={onSingupSubmitHandler}>
           <div>
             <label htmlFor="username">Email:</label>
             <input name="email" type="email" id="email" size="30" required />
           </div>
           <div>
-            <label htmlFor="pass">Password (8 characters minimum):</label>
+            <label htmlFor="pass">Password:</label>
             <input type="password" name="password" minLength="8" required />
           </div>
           <div>
-            <label htmlFor="pass">Confirm Password:</label>
+            <label htmlFor="pass">Confirm:</label>
             <input type="password" name="confirm-password" minLength="8" required />
           </div>
-          <input type="submit" value="Sign up" />
-          <button onClick={onPickLogin}>or log in</button>
-          <div>{loginStatus}</div>
+          <div>
+            <div className="login-button-margin">&nbsp;</div>
+            <input className="bt-singup" type="submit" value="Sign up" />
+            <button onClick={onPickLogin} className="bt-or-login">
+              or log in
+            </button>
+          </div>
         </form>
       </LoginFormWrapper>
     );
