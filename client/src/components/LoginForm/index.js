@@ -23,12 +23,13 @@ export default function LoginForm({ auth, setAuth, setClockListList }) {
     e.preventDefault();
     const form = e.currentTarget;
     const formData = new FormData(form);
-    const email = formData.get('email');
-    const password = formData.get('password');
-    const { token } = await signInUser(email, password);
+    const formEmail = formData.get('email');
+    const formPassword = formData.get('password');
+    const { token, data } = await signInUser(formEmail, formPassword);
+    const { user: { email, role } = {} } = data || {};
     if (token) {
-      setLocalUserAuth({ token, email });
-      setAuth({ token, email });
+      setLocalUserAuth({ token, email, role });
+      setAuth({ token, email, role });
       setLoginLayout('logged-in');
       setLoginStatus('');
     } else {
@@ -40,14 +41,15 @@ export default function LoginForm({ auth, setAuth, setClockListList }) {
     e.preventDefault();
     const form = e.currentTarget;
     const formData = new FormData(form);
-    const email = formData.get('email');
-    const password = formData.get('password');
-    const passwordConfirm = formData.get('confirm-password');
+    const formEmail = formData.get('email');
+    const formPassword = formData.get('password');
+    const formPasswordConfirm = formData.get('confirm-password');
 
-    if (password === passwordConfirm) {
-      const { token } = await signUpUser(email, password, passwordConfirm);
-      setLocalUserAuth({ token, email });
-      setAuth({ token, email });
+    if (formPassword === formPasswordConfirm) {
+      const { token, data } = await signUpUser(formEmail, formPassword, formPasswordConfirm);
+      const { user: { email, role } = {} } = data || {};
+      setLocalUserAuth({ token, email, role });
+      setAuth({ token, email, role });
       setLoginLayout('logged-in');
       setLoginStatus('');
     } else {

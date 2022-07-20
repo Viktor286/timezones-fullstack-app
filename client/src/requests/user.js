@@ -116,3 +116,43 @@ export async function logOutUser(auth) {
     }
   }
 }
+
+export async function getUserList(auth) {
+  const { token } = auth;
+
+  if (token) {
+    try {
+      const response = await fetch(`${baseDomain}/api/v1/users/`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      return await response.json();
+    } catch (e) {
+      console.error(e);
+    }
+  }
+}
+
+export async function sendUserDelete(auth) {
+  const { token, email } = auth;
+
+  if (token) {
+    try {
+      const response = await fetch(`${baseDomain}/api/v1/users/${email}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      return response;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+}

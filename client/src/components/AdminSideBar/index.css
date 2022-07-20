@@ -1,0 +1,6 @@
+aside.admin-sidebar {
+    width: 25%;
+    min-height: 100%;
+    border-right: #93c1da 1px solid;
+    background: white;
+}

@@ -4,6 +4,7 @@ import TimezonesSelector from './components/TimezoneSelector';
 import ClocksList from './components/ClocksList';
 import LoginForm from './components/LoginForm';
 import LogoHeader from './components/LogoHeader';
+import AdminSideBar from './components/AdminSideBar';
 import { createClockItem } from './model/clockItem';
 import { isValidIanaTimezone } from './model/dateTimeZone';
 import { setLocalUserTimezoneList } from './model/localStore';
@@ -87,16 +88,19 @@ function App({ localUserSettings, localUserAuth }) {
   }, [auth]);
 
   return (
-    <div className="App">
-      <LogoHeader />
-      <LoginForm auth={auth} setAuth={setAuth} setClockListList={setClockListList} />
-      <TimezonesSelector skipIanaIds={usedIanaIds} addClockToList={addClockToList} />
-      <ClocksList
-        clockList={clockList}
-        updateLocalClock={updateLocalClock}
-        removeClockFromList={removeClockFromList}
-        addClockToList={addClockToList}
-      />
+    <div className="app">
+      {auth.role === 'admin' || auth.role === 'manager' ? <AdminSideBar auth={auth} /> : null}
+      <main>
+        <LogoHeader />
+        <LoginForm auth={auth} setAuth={setAuth} setClockListList={setClockListList} />
+        <TimezonesSelector skipIanaIds={usedIanaIds} addClockToList={addClockToList} />
+        <ClocksList
+          clockList={clockList}
+          updateLocalClock={updateLocalClock}
+          removeClockFromList={removeClockFromList}
+          addClockToList={addClockToList}
+        />
+      </main>
     </div>
   );
 }
