@@ -11,13 +11,11 @@ export default function AdminSideBar({ auth }) {
       const deleteResponse = await sendUserDelete(auth, userEmail);
 
       if (deleteResponse.status === 204) {
-        console.log('DELETED!', userObj);
         const userListRes = await getUserList(auth);
         const {
           data: { users },
         } = userListRes;
         setUsers(users);
-        // update list
       }
     };
 
