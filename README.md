@@ -1,6 +1,6 @@
 # Timezones App
 
-This is a challenge project to make fullstack app from scratch in 20-hours.
+This is a challenge project to make fullstack app from scratch in 20-hours of work within 5 days.
 
 The app based on MERN stack and has a login auth system and shows the time in different timezones.
 
