@@ -1,8 +1,10 @@
 # Timezones App
 
-This is a challenge project to make fullstack app in 20-hours.
-The app has login system and shows the time in different timezones.
-Based on MERN stack.
+This is a challenge project to make fullstack app from scratch in 20-hours.
+
+The app based on MERN stack and has a login auth system and shows the time in different timezones.
+
+<img width="587" alt="image" src="https://user-images.githubusercontent.com/13506547/180006099-61a8cadc-3fa9-47e1-8c0b-93ca5055b44d.png">
 
 ## To run
 In order to run locally execute next scripts.
